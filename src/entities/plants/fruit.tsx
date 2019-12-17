@@ -9,20 +9,16 @@ export const Fruit: React.FunctionComponent<PositionProps> = ({
   position,
   state,
 }) => {
-  const { behave, act } = useAction(position, state)
+  const { behave, act } = useAction(position, state, id)
 
-  behave(
-    ({ create, replace }) => {
-      const tree = create('Tree')
-      const space = create('Space')
+  behave(({ create, replace }) => {
+    const tree = create('Tree')
+    const space = create('Space')
 
-      Math.random() > 0.5
-        ? replace(story`${self} made ${tree}`, self, tree)
-        : replace(story`${self} left ${space}`, self, space)
-    },
-    id,
-    10
-  )
+    Math.random() > 0.5
+      ? replace(story`${self} made ${tree}`, self, tree)
+      : replace(story`${self} left ${space}`, self, space)
+  }, 10)
 
   return (
     <Square

@@ -9,16 +9,12 @@ export const Bones: React.FunctionComponent<PositionProps> = ({
   position,
   state,
 }) => {
-  const { behave, act } = useAction(position, state)
+  const { behave, act } = useAction(position, state, id)
 
-  behave(
-    ({ look, replace, create }) => {
-      const entity = Math.random() < 0.001 ? create('Tree') : create('Space')
-      replace(story`${self} decomposed into ${entity}`, self, entity)
-    },
-    id,
-    10
-  )
+  behave(({ look, replace, create }) => {
+    const entity = Math.random() < 0.001 ? create('Tree') : create('Space')
+    replace(story`${self} decomposed into ${entity}`, self, entity)
+  }, 10)
 
   return (
     <Square

@@ -10,17 +10,13 @@ export const Box: React.FunctionComponent<PositionProps> = ({
   self,
   state,
 }) => {
-  const { behave, act } = useAction(position, state)
+  const { behave, act } = useAction(position, state, id)
 
-  behave(
-    ({ replace, create }) => {
-      const entity =
-        Math.random() < 0.1 ? create('Carnivore') : create('Herbivore')
-      replace(story`${self} became a ${entity}`, self, entity)
-    },
-    id,
-    5
-  )
+  behave(({ replace, create }) => {
+    const entity =
+      Math.random() < 0.1 ? create('Carnivore') : create('Herbivore')
+    replace(story`${self} became a ${entity}`, self, entity)
+  }, 5)
 
   return (
     <Square

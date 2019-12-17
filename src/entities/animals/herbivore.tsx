@@ -9,43 +9,34 @@ export const Herbivore: React.FunctionComponent<PositionProps> = ({
   self,
   state,
 }) => {
-  const { behave, act } = useAction(position, state)
+  const { behave, act } = useAction(position, state, id)
 
-  behave(
-    ({ look, replace, create }) => {
-      const fruit = look('Fruit')
-      const herbivore = look('Herbivore')
-      const space = look('Space')
+  behave(({ look, replace, create }) => {
+    const fruit = look('Fruit')
+    const herbivore = look('Herbivore')
+    const space = look('Space')
 
-      if (fruit) {
-        replace(story`${self} ate ${fruit}`, fruit, plusEnergy(self, 10))
-      } else if (
-        herbivore &&
-        space &&
-        self.energy > 15 &&
-        Math.random() < 0.05
-      ) {
-        const baby = create('Herbivore')
+    if (fruit) {
+      replace(story`${self} ate ${fruit}`, fruit, plusEnergy(self, 10))
+    } else if (herbivore && space && self.energy > 15 && Math.random() < 0.05) {
+      const baby = create('Herbivore')
 
-        replace(story`${self} made ${baby} with ${herbivore}`, space, baby)
-      } else if (self.energy <= 0) {
-        const bones = create('Bones')
+      replace(story`${self} made ${baby} with ${herbivore}`, space, baby)
+    } else if (self.energy <= 0) {
+      const bones = create('Bones')
 
-        replace(story`${self} starved to ${bones}`, self, bones)
-      } else if (space) {
-        replace(
-          story`${self} moved to ${space}`,
-          space,
-          minusEnergy(self),
-          self.energy > 15 && Math.random() < 0.1
-            ? create('Poop')
-            : create('Space')
-        )
-      }
-    },
-    id,
-    1
-  )
+      replace(story`${self} starved to ${bones}`, self, bones)
+    } else if (space) {
+      replace(
+        story`${self} moved to ${space}`,
+        space,
+        minusEnergy(self),
+        self.energy > 15 && Math.random() < 0.1
+          ? create('Poop')
+          : create('Space')
+      )
+    }
+  }, 1)
 
   return (
     <Square

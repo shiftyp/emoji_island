@@ -53,7 +53,7 @@ export const World: React.FunctionComponent<{
 
   const {
     world,
-    act,
+    createBehave,
     history,
     replace,
     create,
@@ -104,7 +104,7 @@ export const World: React.FunctionComponent<{
                 : 0
               const count = scores[name] ? scores[name].count : 0
               return (
-                <li>
+                <li key={name}>
                   {count !== 0 ? (
                     <b>
                       {i + 1}: {name}
@@ -136,7 +136,10 @@ export const World: React.FunctionComponent<{
           }, [])}
         </ul>
       </div>
-      <WorldContext.Provider key="provider" value={{ act, replace, create }}>
+      <WorldContext.Provider
+        key="provider"
+        value={{ createBehave, replace, create }}
+      >
         <Grid
           key={name}
           gridRef={gridRef}

@@ -9,17 +9,12 @@ export const Poop: React.FunctionComponent<PositionProps> = ({
   position,
   state,
 }) => {
-  const { behave, act } = useAction(position, state)
-  const scale = React.useMemo(() => Math.random() * 0.5 + 0.5, [])
+  const { behave, act } = useAction(position, state, id)
 
-  behave(
-    ({ look, replace, create }) => {
-      const entity = Math.random() < 0.5 ? create('Tree') : create('Space')
-      replace(story`${self} became ${entity}`, self, entity)
-    },
-    id,
-    10
-  )
+  behave(({ look, replace, create }) => {
+    const entity = Math.random() < 0.5 ? create('Tree') : create('Space')
+    replace(story`${self} became ${entity}`, self, entity)
+  }, 10)
 
   return (
     <Square
@@ -27,7 +22,7 @@ export const Poop: React.FunctionComponent<PositionProps> = ({
       onClick={act(({ replace, create }) => {
         replace(story`${self} decomposed`, self, create('Space'))
       })}
-      scale={scale}
+      scale={useScale(() => Math.random() * 0.5 + 0.5)}
       position={position}
       background="rgba(0, 0, 0, 0.25)"
     >

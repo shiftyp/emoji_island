@@ -5,11 +5,12 @@ import { useAction } from '../../core/logic'
 import { story } from '../../utils'
 
 export const Space: React.FunctionComponent<PositionProps> = ({
+  id,
   position,
   self,
   state,
 }) => {
-  const { act } = useAction(position, state)
+  const { act } = useAction(position, state, id)
 
   return (
     <Square

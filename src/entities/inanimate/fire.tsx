@@ -9,22 +9,22 @@ export const Fire: React.FunctionComponent<PositionProps> = ({
   position,
   state,
 }) => {
-  const { behave, act } = useAction(position, state)
+  const { behave, act } = useAction(position, state, id)
 
-  behave(
-    ({ look, replace, create }) => {
-      const tree = look('Tree')
-      const fire = create('Fire')
+  behave(({ look, replace, create }) => {
+    const tree = look('Tree')
+    const fire = create('Fire')
 
-      if (Math.random() < 0.25) {
-        replace(story`${self} burnt out`, self, create('Space'))
-      } else if (tree) {
-        replace(story`${fire} burned ${tree}`, tree, fire)
-      }
-    },
-    id,
-    1
-  )
+    if (Math.random() < 0.25) {
+      replace(story`${self} burnt out`, self, create('Space'))
+    } else if (tree) {
+      replace(story`${fire} burned ${tree}`, tree, fire)
+    }
+  }, 1)
+
+  behave(({ replace, create }) => {
+    replace(story`${self} burnt out`, self, create('Space'))
+  }, 5)
 
   return (
     <Square

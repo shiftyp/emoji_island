@@ -27,7 +27,7 @@ const Game = () => {
   )
 
   const sizeOptions = Object.keys(sizes).map(optionSize => (
-    <option selected={size === optionSize} value={optionSize}>
+    <option key={optionSize} value={optionSize}>
       {optionSize}
     </option>
   ))
@@ -45,11 +45,13 @@ const Game = () => {
       sizeControl={
         <select
           className="select"
+          value={size}
           onChange={e => {
             const select = e.target as HTMLSelectElement
 
-            setSize(select.options[select.selectedIndex]
-              .value as (keyof typeof sizes))
+            setSize(
+              select.options[select.selectedIndex].value as keyof typeof sizes
+            )
           }}
         >
           {sizeOptions}

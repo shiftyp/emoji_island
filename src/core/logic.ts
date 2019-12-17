@@ -67,9 +67,10 @@ export type Action = (context: {
 }) => void
 
 export const WorldContext = createContext<{
-  act: (
-    position: MutableRefObject<Coordinate>
-  ) => (action: Action, id: string, steps: number) => void
+  createBehave: (
+    position: MutableRefObject<Coordinate>,
+    id: string
+  ) => (action: Action, steps: number) => void
   replace: Replace
   create: Create
 }>(null)
@@ -162,17 +163,17 @@ export const useWorld = (width: number, height: number) => {
     updateWorld(updates)
   }
 
-  let actions: Record<
+  let behaviors: Record<
     string,
-    [number, React.MutableRefObject<Coordinate>, Action]
+    [number, React.MutableRefObject<Coordinate>, Action][]
   > = {}
 
-  let act = (positionRef: MutableRefObject<Coordinate>) => (
-    action: Action,
-    id: string,
-    steps: number
-  ) => {
-    actions[id] = [steps, positionRef, action]
+  let createBehave = (
+    positionRef: MutableRefObject<Coordinate>,
+    id: string
+  ) => (action: Action, steps: number) => {
+    behaviors[id] = behaviors[id] || []
+    behaviors[id].push([steps, positionRef, action])
   }
 
   let create: Create = useCallback(
@@ -185,57 +186,59 @@ export const useWorld = (width: number, height: number) => {
       const interval = setInterval(() => {
         if (paused) return
         step.current++
-        const { updates } = shuffle(Object.keys(actions)).reduce(
+        const { updates } = shuffle(Object.keys(behaviors)).reduce(
           ({ updates, updatedIds }, key) => {
             if (!ids[key] || updatedIds[key]) {
               return { updates, updatedIds }
             }
-            const [steps, positionRef, action] = actions[key]
+            const entityBehaviors = behaviors[key]
 
-            if (step.current % steps === 0) {
-              action({
-                replace: (
-                  historyEntry,
-                  target,
-                  replacement,
-                  filler = create('Space')
-                ) => {
-                  if (updatedIds[target.id] || updatedIds[replacement.id]) {
-                    return
-                  }
-                  const index = world.findIndex(
-                    entity => entity.id === target.id
-                  )
-                  const replacementIndex = world.findIndex(
-                    entity => entity.id === replacement.id
-                  )
+            entityBehaviors.forEach(([steps, positionRef, action]) => {
+              if (step.current % steps === 0) {
+                action({
+                  replace: (
+                    historyEntry,
+                    target,
+                    replacement,
+                    filler = create('Space')
+                  ) => {
+                    if (updatedIds[target.id] || updatedIds[replacement.id]) {
+                      return
+                    }
+                    const index = world.findIndex(
+                      entity => entity.id === target.id
+                    )
+                    const replacementIndex = world.findIndex(
+                      entity => entity.id === replacement.id
+                    )
 
-                  if (updates[index] || updates[replacementIndex]) {
-                    return
-                  }
-                  if (index >= 0) {
-                    updates[index] = [index, historyEntry, replacement]
-                    updatedIds[replacement.id] = true
-                    updatedIds[target.id] = true
-                  }
-                  if (replacementIndex >= 0) {
-                    updatedIds[filler.id] = true
-                    updates[replacementIndex] = [
-                      replacementIndex,
-                      story`${replacement} left ${filler}`,
-                      filler,
-                    ]
-                  }
-                },
-                create,
-                look: (name: string) =>
-                  lookAround(
-                    positionRef.current,
-                    peek,
-                    entity => entity.name === name
-                  ),
-              })
-            }
+                    if (updates[index] || updates[replacementIndex]) {
+                      return
+                    }
+                    if (index >= 0) {
+                      updates[index] = [index, historyEntry, replacement]
+                      updatedIds[replacement.id] = true
+                      updatedIds[target.id] = true
+                    }
+                    if (replacementIndex >= 0) {
+                      updatedIds[filler.id] = true
+                      updates[replacementIndex] = [
+                        replacementIndex,
+                        story`${replacement} left ${filler}`,
+                        filler,
+                      ]
+                    }
+                  },
+                  create,
+                  look: (name: string) =>
+                    lookAround(
+                      positionRef.current,
+                      peek,
+                      entity => entity.name === name
+                    ),
+                })
+              }
+            })
 
             return { updates, updatedIds }
           },
@@ -255,7 +258,15 @@ export const useWorld = (width: number, height: number) => {
     }
   })
 
-  return { world, act, replace, history, create, togglePaused, paused }
+  return {
+    world,
+    createBehave,
+    replace,
+    history,
+    create,
+    togglePaused,
+    paused,
+  }
 }
 
 export type Coordinate = [number, number]
@@ -268,8 +279,12 @@ export const usePosition = (position: Coordinate) => {
   return ref
 }
 
-export const useAction = (position: Coordinate, state: SquareStates) => {
-  const { act, replace, create } = useContext(WorldContext)
+export const useAction = (
+  position: Coordinate,
+  state: SquareStates,
+  id: string
+) => {
+  const { createBehave, replace, create } = useContext(WorldContext)
   const positionRef = usePosition(position)
 
   if (state !== 'entered') {
@@ -280,7 +295,7 @@ export const useAction = (position: Coordinate, state: SquareStates) => {
   }
 
   return {
-    behave: act(positionRef),
+    behave: createBehave(positionRef, id),
     act: (cb: (context: { replace: Replace; create: Create }) => void) => () =>
       cb({ replace, create }),
   }
