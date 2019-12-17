@@ -164,6 +164,14 @@ li {
   border: none;
 }
 
+.square-exit {
+  opacity: 0;
+}
+
+.square-enter {
+  opacity: 1;
+}
+
 .square-enter-active .square {
   animation-name: scaleIn;
   animation-duration: 0.5s;
