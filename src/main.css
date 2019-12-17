@@ -164,12 +164,8 @@ li {
   border: none;
 }
 
-.square-exit {
+.square-exit .square {
   opacity: 0;
-}
-
-.square-enter {
-  opacity: 1;
 }
 
 .square-enter-active .square {
