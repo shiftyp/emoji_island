@@ -21,6 +21,9 @@ li {
 }
 
 @keyframes shake {
+  0% {
+    opacity: 0.75;
+  }
   10%,
   90% {
     transform: translate3d(-0.05rem, 0, 0);
@@ -41,14 +44,19 @@ li {
   60% {
     transform: translate3d(-0.2rem, 0, 0);
   }
+  100% {
+    opacity: 0;
+  }
 }
 
 @keyframes scaleIn {
   0% {
+    opacity: 0;
     transform: scale(0);
   }
   100% {
     transform: scale(1);
+    opacity: 1;
   }
 }
 
