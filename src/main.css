@@ -52,10 +52,10 @@ li {
 @keyframes scaleIn {
   0% {
     opacity: 0;
-    transform: scale(0);
+    transform: scale(0) translateY(100%);
   }
   100% {
-    transform: scale(1);
+    transform: scale(1) translateY(0);
     opacity: 1;
   }
 }
@@ -164,7 +164,7 @@ li {
   border: none;
 }
 
-.square-exit .square {
+.square-exit:not(.square-exit-active) .square {
   opacity: 0;
 }
 
