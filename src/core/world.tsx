@@ -154,6 +154,7 @@ export const World: React.FunctionComponent<{
 
               return (
                 <CSSTransition
+                  unmountOnExit
                   key={`${name}-${id}-transition`}
                   classNames="square"
                   timeout={

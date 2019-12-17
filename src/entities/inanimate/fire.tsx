@@ -16,7 +16,7 @@ export const Fire: React.FunctionComponent<PositionProps> = ({
       const tree = look('Tree')
       const fire = create('Fire')
 
-      if (Math.random() < 0.5) {
+      if (Math.random() < 0.25) {
         replace(story`${self} burnt out`, self, create('Space'))
       } else if (tree) {
         replace(story`${fire} burned ${tree}`, tree, fire)
