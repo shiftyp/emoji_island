@@ -1,18 +1,12 @@
 import React from 'react'
-import {
-  useRandomEmoji,
-  useAction,
-  story,
-  plusEnergy,
-  minusEnergy,
-} from '../../core/logic'
+import { useRandomEmoji, useAction } from '../../core/logic'
 import { Square, PositionProps } from '../../core/square'
+import { story, plusEnergy, minusEnergy } from '../../utils'
 
 export const Carnivore: React.FunctionComponent<PositionProps> = ({
   id,
   position,
   self,
-  className,
   state,
 }) => {
   const { behave, act } = useAction(position, state)
@@ -38,7 +32,6 @@ export const Carnivore: React.FunctionComponent<PositionProps> = ({
 
   return (
     <Square
-      className={className}
       onClick={act(({ replace, create }) => {
         replace(story`${self} died`, self, create('Bones'))
       })}

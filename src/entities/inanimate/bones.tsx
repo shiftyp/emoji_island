@@ -1,12 +1,12 @@
 import React from 'react'
-import { useRandomEmoji, useAction, story, useScale } from '../../core/logic'
+import { useRandomEmoji, useAction, useScale } from '../../core/logic'
 import { Square, PositionProps } from '../../core/square'
+import { story } from '../../utils'
 
 export const Bones: React.FunctionComponent<PositionProps> = ({
   id,
   self,
   position,
-  className,
   state,
 }) => {
   const { behave, act } = useAction(position, state)
@@ -22,8 +22,6 @@ export const Bones: React.FunctionComponent<PositionProps> = ({
 
   return (
     <Square
-      className={className}
-      key="square"
       title={story`Decompose ${self}`}
       onClick={act(({ replace, create }) => {
         replace(story`${self} decomposed`, self, create('Space'))

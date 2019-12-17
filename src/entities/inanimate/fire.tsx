@@ -1,12 +1,12 @@
 import React from 'react'
-import { useRandomEmoji, useAction, story } from '../../core/logic'
+import { useRandomEmoji, useAction } from '../../core/logic'
 import { Square, PositionProps } from '../../core/square'
+import { story } from '../../utils'
 
 export const Fire: React.FunctionComponent<PositionProps> = ({
   id,
   self,
   position,
-  className,
   state,
 }) => {
   const { behave, act } = useAction(position, state)
@@ -28,8 +28,6 @@ export const Fire: React.FunctionComponent<PositionProps> = ({
 
   return (
     <Square
-      className={className}
-      key="square"
       title={story`extinguish ${self}`}
       onClick={act(({ replace, create }) => {
         replace(story`${self} extinguished`, self, create('Space'))

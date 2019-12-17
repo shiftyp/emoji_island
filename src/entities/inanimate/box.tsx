@@ -1,13 +1,13 @@
 import React from 'react'
 
 import { Square, PositionProps } from '../../core/square'
-import { useAction, story, useRandomEmoji } from '../../core/logic'
+import { useAction, useRandomEmoji } from '../../core/logic'
+import { story } from '../../utils'
 
 export const Box: React.FunctionComponent<PositionProps> = ({
   id,
   position,
   self,
-  className,
   state,
 }) => {
   const { behave, act } = useAction(position, state)
@@ -24,8 +24,6 @@ export const Box: React.FunctionComponent<PositionProps> = ({
 
   return (
     <Square
-      key="square"
-      className={className}
       scale={1.5}
       background="rgba(50, 50, 50, 0.25)"
       title={story`Destroy ${self}`}

@@ -1,12 +1,12 @@
 import React from 'react'
-import { useRandomEmoji, useAction, story, useScale } from '../../core/logic'
+import { useRandomEmoji, useAction, useScale } from '../../core/logic'
 import { Square, PositionProps } from '../../core/square'
+import { story } from '../../utils'
 
 export const Tree: React.FunctionComponent<PositionProps> = ({
   id,
   self,
   position,
-  className,
   state,
 }) => {
   const { behave, act } = useAction(position, state)
@@ -32,8 +32,6 @@ export const Tree: React.FunctionComponent<PositionProps> = ({
 
   return (
     <Square
-      className={className}
-      key="square"
       title={story`burn ${self}`}
       position={position}
       background="rgba(52, 115, 68, 0.25)"

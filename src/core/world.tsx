@@ -1,9 +1,10 @@
 import React from 'react'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
-import { useWorld, WorldContext, Coordinate, sourcesMap } from './logic'
+import { useWorld, WorldContext, Coordinate } from './logic'
 import { Grid } from './grid'
 import { SquareBoundary } from './errors'
+import { sourcesMap } from '../entities'
 
 export const sizes = {
   Small: [5, 5],
@@ -170,6 +171,7 @@ export const World: React.FunctionComponent<{
                     <SquareBoundary
                       key={`${name}-${id}-boundary`}
                       position={position}
+                      entity={entity}
                     >
                       <Component
                         key={`${name}-${id}-square`}

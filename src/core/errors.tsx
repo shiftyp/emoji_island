@@ -1,6 +1,8 @@
 import React from 'react'
 import { Square } from './square'
 import { Coordinate } from './logic'
+import { Entity } from '../entities'
+import { story } from '../utils'
 
 const BadSquare: React.FunctionComponent<{
   position: Coordinate
@@ -12,7 +14,7 @@ const BadSquare: React.FunctionComponent<{
 )
 
 export class SquareBoundary extends React.Component<
-  { position: Coordinate },
+  { position: Coordinate; entity: Entity },
   { error: any }
 > {
   constructor(props) {
@@ -33,7 +35,9 @@ export class SquareBoundary extends React.Component<
     if (this.state.error) {
       return (
         <BadSquare
-          title={this.state.error.message}
+          title={story`${
+            this.props.entity
+          } threw ${this.state.error.toString()}`}
           position={this.props.position}
         />
       )
