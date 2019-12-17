@@ -18,8 +18,7 @@ export const Fire: React.FunctionComponent<PositionProps> = ({
 
       if (Math.random() < 0.5) {
         replace(story`${self} burnt out`, self, create('Space'))
-      }
-      if (tree) {
+      } else if (tree) {
         replace(story`${fire} burned ${tree}`, tree, fire)
       }
     },
