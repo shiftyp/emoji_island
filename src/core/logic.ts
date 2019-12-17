@@ -16,11 +16,14 @@ import * as Plants from '../entities/plants'
 import * as Inanimate from '../entities/inanimate'
 import { PositionProps } from '../core'
 
+export type SquareStates = 'entering' | 'exiting' | 'entered' | 'exited'
+
 export type Entity = Readonly<{
   name: string
   id: string
   component: React.FunctionComponent<PositionProps>
   energy: number
+  animate: boolean
 }>
 
 const shuffle = <T>(array: T[]): T[] => {
@@ -69,6 +72,7 @@ type SourceEntity = Readonly<{
   component: React.FunctionComponent
   makeId: () => string
   startingEnergy: number
+  animate: boolean
 }>
 
 const createEntityFromSource = ({
@@ -76,11 +80,13 @@ const createEntityFromSource = ({
   component,
   makeId,
   startingEnergy,
+  animate,
 }: SourceEntity): Entity => ({
   id: makeId(),
   name,
   component,
   energy: startingEnergy,
+  animate,
 })
 
 const sources: SourceEntity[] = [
@@ -90,6 +96,7 @@ const sources: SourceEntity[] = [
     component: Inanimate.Space,
     makeId: () => `${fake.company.bsBuzz()} ${fake.random.alphaNumeric(3)}`,
     startingEnergy: 0,
+    animate: false,
   },
   {
     name: 'Mountain',
@@ -100,6 +107,7 @@ const sources: SourceEntity[] = [
         3
       )}`,
     startingEnergy: 0,
+    animate: false,
   },
   {
     name: 'Tree',
@@ -107,6 +115,7 @@ const sources: SourceEntity[] = [
     component: Plants.Tree,
     makeId: () => fake.random.alphaNumeric(12),
     startingEnergy: 0,
+    animate: true,
   },
   {
     name: 'Fruit',
@@ -114,6 +123,7 @@ const sources: SourceEntity[] = [
     component: Plants.Fruit,
     makeId: () => fake.random.alphaNumeric(12),
     startingEnergy: 0,
+    animate: true,
   },
   {
     name: 'Herbivore',
@@ -124,6 +134,7 @@ const sources: SourceEntity[] = [
         3
       )}`,
     startingEnergy: 20,
+    animate: true,
   },
   {
     name: 'Carnivore',
@@ -131,6 +142,7 @@ const sources: SourceEntity[] = [
     component: Animals.Carnivore,
     makeId: () => `${fake.name.firstName()} ${fake.random.alphaNumeric(6)}`,
     startingEnergy: 10,
+    animate: true,
   },
   {
     name: 'Fire',
@@ -138,6 +150,7 @@ const sources: SourceEntity[] = [
     component: Inanimate.Fire,
     makeId: () => fake.random.alphaNumeric(12),
     startingEnergy: 0,
+    animate: true,
   },
   {
     name: 'Bones',
@@ -145,6 +158,7 @@ const sources: SourceEntity[] = [
     component: Inanimate.Bones,
     startingEnergy: 0,
     makeId: () => fake.random.alphaNumeric(12),
+    animate: true,
   },
   {
     name: 'Box',
@@ -152,6 +166,7 @@ const sources: SourceEntity[] = [
     component: Inanimate.Box,
     startingEnergy: 0,
     makeId: () => fake.random.alphaNumeric(12),
+    animate: true,
   },
   {
     name: 'Poop',
@@ -159,6 +174,7 @@ const sources: SourceEntity[] = [
     component: Inanimate.Poop,
     startingEnergy: 0,
     makeId: () => fake.random.alphaNumeric(12),
+    animate: true,
   },
 ]
 
@@ -231,7 +247,7 @@ export type Action = (context: {
 export const WorldContext = createContext<{
   act: (
     position: MutableRefObject<Coordinate>
-  ) => (action: Action, steps: number) => void
+  ) => (action: Action, id: string, steps: number) => void
   replace: Replace
   create: Create
 }>(null)
@@ -249,18 +265,32 @@ export const useWorld = (width: number, height: number) => {
     false
   )
 
-  const [{ world, history }, updateWorld] = useReducer(
+  const [{ world, history, ids }, updateWorld] = useReducer(
     (
       state: {
         world: World
         history: History
+        ids: Record<string, true>
       },
       updates: Update[]
     ) =>
       updates.reduce(({ world, history }, [index, historyEntry, entity]) => {
         console.log(step.current, historyEntry)
+        const newWorld = [
+          ...world.slice(0, index),
+          entity,
+          ...world.slice(index + 1),
+        ]
+
         return {
-          world: [...world.slice(0, index), entity, ...world.slice(index + 1)],
+          ids: newWorld.reduce(
+            (ids, entity) => ({
+              ...ids,
+              [entity.id]: true,
+            }),
+            {}
+          ),
+          world: newWorld,
           history: [
             ...history.slice(0, step.current),
             (history[step.current] || 0) + 1,
@@ -271,6 +301,13 @@ export const useWorld = (width: number, height: number) => {
     {
       world: initialWorld,
       history: [],
+      ids: initialWorld.reduce(
+        (ids, entity) => ({
+          ...ids,
+          [entity.id]: true,
+        }),
+        {}
+      ),
     }
   )
 
@@ -305,13 +342,17 @@ export const useWorld = (width: number, height: number) => {
     updateWorld(updates)
   }
 
-  let actions: [number, React.MutableRefObject<Coordinate>, Action][] = []
+  let actions: Record<
+    string,
+    [number, React.MutableRefObject<Coordinate>, Action]
+  > = {}
 
   let act = (positionRef: MutableRefObject<Coordinate>) => (
     action: Action,
+    id: string,
     steps: number
   ) => {
-    actions.push([steps, positionRef, action])
+    actions[id] = [steps, positionRef, action]
   }
 
   let create: Create = useCallback(
@@ -324,8 +365,13 @@ export const useWorld = (width: number, height: number) => {
       const interval = setInterval(() => {
         if (paused) return
         step.current++
-        const updates = shuffle(actions).reduce(
-          (updates, [steps, positionRef, action]) => {
+        const { updates } = shuffle(Object.keys(actions)).reduce(
+          ({ updates, updatedIds }, key) => {
+            if (!ids[key] || updatedIds[key]) {
+              return { updates, updatedIds }
+            }
+            const [steps, positionRef, action] = actions[key]
+
             if (step.current % steps === 0) {
               action({
                 replace: (
@@ -334,6 +380,9 @@ export const useWorld = (width: number, height: number) => {
                   replacement,
                   filler = create('Space')
                 ) => {
+                  if (updatedIds[target.id] || updatedIds[replacement.id]) {
+                    return
+                  }
                   const index = world.findIndex(
                     entity => entity.id === target.id
                   )
@@ -342,20 +391,21 @@ export const useWorld = (width: number, height: number) => {
                   )
 
                   if (updates[index] || updates[replacementIndex]) {
-                    return false
+                    return
                   }
                   if (index >= 0) {
                     updates[index] = [index, historyEntry, replacement]
+                    updatedIds[replacement.id] = true
+                    updatedIds[target.id] = true
                   }
                   if (replacementIndex >= 0) {
+                    updatedIds[filler.id] = true
                     updates[replacementIndex] = [
                       replacementIndex,
                       story`${replacement} left ${filler}`,
                       filler,
                     ]
                   }
-
-                  return true
                 },
                 create,
                 look: (name: string) =>
@@ -367,9 +417,15 @@ export const useWorld = (width: number, height: number) => {
               })
             }
 
-            return updates
+            return { updates, updatedIds }
           },
-          {} as Record<number, Update>
+          {
+            updates: [],
+            updatedIds: {},
+          } as {
+            updates: Update[]
+            updatedIds: Record<string, true>
+          }
         )
 
         updateWorld(Object.keys(updates).map(key => updates[key]))
@@ -403,9 +459,16 @@ export const usePosition = (position: Coordinate) => {
   return ref
 }
 
-export const useAction = (position: Coordinate) => {
+export const useAction = (position: Coordinate, state: SquareStates) => {
   const { act, replace, create } = useContext(WorldContext)
   const positionRef = usePosition(position)
+
+  if (state !== 'entered') {
+    return {
+      behave: () => {},
+      act: () => () => {},
+    }
+  }
 
   return {
     behave: act(positionRef),

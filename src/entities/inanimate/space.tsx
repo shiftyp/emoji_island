@@ -6,13 +6,16 @@ import { useAction, story } from '../../core/logic'
 export const Space: React.FunctionComponent<PositionProps> = ({
   position,
   self,
+  className,
+  state,
 }) => {
-  const { act } = useAction(position)
+  const { act } = useAction(position, state)
 
   return (
     <Square
+      className={className}
       key="square"
-      fadeIn={false}
+      animate={false}
       background="rgba(50, 50, 50, 0.25)"
       title={story`Create box at ${self}`}
       position={position}

@@ -3,28 +3,36 @@ import { useRandomEmoji, useAction, story, useScale } from '../../core/logic'
 import { Square, PositionProps } from '../../core/square'
 
 export const Tree: React.FunctionComponent<PositionProps> = ({
+  id,
   self,
   position,
+  className,
+  state,
 }) => {
-  const { behave, act } = useAction(position)
+  const { behave, act } = useAction(position, state)
 
-  behave(({ look, replace, create }) => {
-    const space = look('Space')
+  behave(
+    ({ look, replace, create }) => {
+      const space = look('Space')
 
-    if (space) {
-      const fruit = create('Fruit')
+      if (space) {
+        const fruit = create('Fruit')
 
-      replace(story`${self} made ${fruit}`, space, fruit)
-    }
+        replace(story`${self} made ${fruit}`, space, fruit)
+      }
 
-    if (Math.random() < 0.001) {
-      const fire = create('Fire')
-      replace(story`${self} combusted into ${fire}`, self, fire)
-    }
-  }, 10)
+      if (Math.random() < 0.001) {
+        const fire = create('Fire')
+        replace(story`${self} combusted into ${fire}`, self, fire)
+      }
+    },
+    id,
+    10
+  )
 
   return (
     <Square
+      className={className}
       key="square"
       title={story`burn ${self}`}
       position={position}

@@ -1,5 +1,5 @@
 import React from 'react'
-import {TransitionGroup} from 'react-transition-group'
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 import { useWorld, WorldContext, Coordinate, sourcesMap } from './logic'
 import { Grid } from './grid'
@@ -145,28 +145,44 @@ export const World: React.FunctionComponent<{
           width={width}
           scale={scale}
         >
+          <TransitionGroup key={`${name}-group`} component={null}>
             {world.map((entity, index) => {
-              const { name, id, component: Component } = entity
+              const { name, id, component: Component, animate } = entity
               const x = index % width
               const y = Math.floor(index / width)
               const position: Coordinate = [x, y]
 
               return (
-                <TransitionGroup key={`${name}-${id}-group`}>
-                  <SquareBoundary
-                    key={`${name}-${id}-boundary`}
-                    position={position}
-                  >
-                    <Component
-                      key={`${name}-${id}-square`}
-                      id={id}
-                      self={entity}
+                <CSSTransition
+                  key={`${name}-${id}-transition`}
+                  classNames="square"
+                  timeout={
+                    animate
+                      ? {
+                          enter: 500,
+                          exit: 1000,
+                        }
+                      : 0
+                  }
+                >
+                  {state => (
+                    <SquareBoundary
+                      key={`${name}-${id}-boundary`}
                       position={position}
-                    />
-                  </SquareBoundary>
-                </TransitionGroup>
+                    >
+                      <Component
+                        key={`${name}-${id}-square`}
+                        id={id}
+                        self={entity}
+                        position={position}
+                        state={state}
+                      />
+                    </SquareBoundary>
+                  )}
+                </CSSTransition>
               )
             })}
+          </TransitionGroup>
         </Grid>
       </WorldContext.Provider>
     </div>

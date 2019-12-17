@@ -20,6 +20,49 @@ li {
   font-size: 0.75em;
 }
 
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-0.05rem, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(0.2rem, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(0.3rem, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(-0.2rem, 0, 0);
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
 .button,
 .select {
   padding: 0.5rem;
@@ -49,6 +92,7 @@ li {
   border: 0.5rem solid rgb(219, 197, 100);
   background-color: rgb(146, 101, 42);
   padding: 2rem;
+  user-select: none;
 }
 
 .grid:before {
@@ -90,33 +134,37 @@ li {
 }
 
 .grid .square-button {
+  display: block;
   position: absolute;
   padding: 0;
   height: 3rem;
   width: 3rem;
-  transition-property: all;
-  transition-duration: 0.5s;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+  border-radius: 20%;
+  box-sizing: border-box;
 }
 
 .grid .square {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   display: flex;
-  height: 3rem;
-  width: 3rem;
   justify-content: center;
   align-items: center;
-  border-radius: 20%;
   box-sizing: border-box;
-  animation-name: fadeIn;
+  border: none;
+}
+
+.square-enter-active .square {
+  animation-name: scaleIn;
+  animation-duration: 0.5s;
+}
+
+.square-exit-active .square {
+  animation-name: shake;
   animation-duration: 1s;
+  z-index: 2;
 }
 
 .grid .square:hover,

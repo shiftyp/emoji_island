@@ -17,7 +17,8 @@
     "react-transition-group": "4.3.0"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.6.1"
+    "parcel-bundler": "^1.6.1",
+    "typescript": "^3.7.3"
   },
   "keywords": []
 }

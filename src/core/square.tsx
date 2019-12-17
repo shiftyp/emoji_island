@@ -1,5 +1,5 @@
 import React from 'react'
-import { Entity, Coordinate } from '../core/logic'
+import { Entity, Coordinate, SquareStates } from '../core/logic'
 
 export type SquareProps = {
   title: string
@@ -9,13 +9,16 @@ export type SquareProps = {
   transition?: string
   onClick?: () => void
   layer?: number
-  fadeIn?: boolean
+  animate?: boolean
+  className?: string
 }
 
 export type PositionProps = {
   position: Coordinate
   self: Entity
   id: string
+  className?: string
+  state: SquareStates
 }
 
 export const Square: React.FunctionComponent<SquareProps> = ({
@@ -25,7 +28,8 @@ export const Square: React.FunctionComponent<SquareProps> = ({
   children,
   position,
   onClick,
-  fadeIn = true,
+  className,
+  animate = true,
   layer = 1,
 }) => (
   <button
@@ -33,10 +37,10 @@ export const Square: React.FunctionComponent<SquareProps> = ({
     className="square-button"
     onClick={onClick}
     style={{
-      background: 'transparent',
-      border: 'none',
       top: `${position[1] * 3}rem`,
       left: `${position[0] * 3}rem`,
+      border: `0.2rem solid ${background}`,
+      background: `radial-gradient(${background}, rgba(0, 0, 0, 0))`,
     }}
     title={title}
   >
@@ -47,10 +51,7 @@ export const Square: React.FunctionComponent<SquareProps> = ({
       aria-label={title}
       style={{
         fontSize: `${scale}rem`,
-        background: `radial-gradient(${background}, rgba(0, 0, 0, 0))`,
-        border: `0.2rem solid ${background}`,
         zIndex: layer,
-        animationDuration: fadeIn ? '1s' : '0s',
       }}
     >
       {children}
