@@ -1,0 +1,6 @@
+export * from './bones'
+export * from './box'
+export * from './space'
+export * from './fire'
+export * from './mountain'
+export * from './poop'

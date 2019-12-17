@@ -1,0 +1,140 @@
+html,
+body {
+  margin: 0;
+  overflow: visible;
+  background: rgb(40, 109, 199);
+}
+
+h1,
+h2,
+h3,
+li,
+p {
+  margin: 0 0 0.5rem 0;
+  font-family: 'Courier New', Courier, monospace;
+  color: white;
+}
+
+p,
+li {
+  font-size: 0.75em;
+}
+
+.button,
+.select {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 1em;
+}
+
+.layout {
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.header {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  border-bottom: 0.5rem solid rgb(19, 51, 94);
+}
+
+.grid {
+  transform-origin: 0% 0%;
+  box-sizing: content-box;
+  border-radius: 2rem;
+  border: 0.5rem solid rgb(219, 197, 100);
+  background-color: rgb(146, 101, 42);
+  padding: 2rem;
+}
+
+.grid:before {
+  filter: blur(1rem);
+  border: 3rem solid rgba(84, 186, 233, 0.65);
+  background-color: rgba(99, 96, 96, 0.5);
+  display: block;
+  content: ' ';
+  position: absolute;
+  top: -3rem;
+  left: -3rem;
+  bottom: -3rem;
+  right: -3rem;
+  border-radius: 3rem;
+  z-index: -1;
+}
+
+.grid:after {
+  filter: blur(2rem);
+  border: 3rem solid rgba(45, 112, 143, 0.8);
+  display: block;
+  content: ' ';
+  position: absolute;
+  top: -5.5rem;
+  left: -5.5rem;
+  bottom: -5.5rem;
+  right: -5.5rem;
+  border-radius: 3rem;
+  z-index: -1;
+}
+
+.grid-inner {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  min-width: 100%;
+}
+
+.grid .square-button {
+  position: absolute;
+  padding: 0;
+  height: 3rem;
+  width: 3rem;
+  transition-property: all;
+  transition-duration: 0.5s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.grid .square {
+  display: flex;
+  height: 3rem;
+  width: 3rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20%;
+  box-sizing: border-box;
+  animation-name: fadeIn;
+  animation-duration: 1s;
+}
+
+.grid .square:hover,
+.grid .square:focus {
+  filter: drop-shadow(0px 0px 3px #ccc);
+  cursor: pointer;
+}
+
+.log {
+  width: 400px;
+  max-width: 50%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 1rem;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.log li {
+  list-style: none;
+}
