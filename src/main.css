@@ -26,23 +26,23 @@ li {
   }
   10%,
   90% {
-    transform: translate3d(-0.05rem, 0, 0);
+    transform: rotate(-10deg);
   }
 
   20%,
   80% {
-    transform: translate3d(0.2rem, 0, 0);
+    transform: rotate(12deg);
   }
 
   30%,
   50%,
   70% {
-    transform: translate3d(0.3rem, 0, 0);
+    transform: rotate(-4deg);
   }
 
   40%,
   60% {
-    transform: translate3d(-0.2rem, 0, 0);
+    tran4sform: rotate(10deg);
   }
   100% {
     opacity: 0;
@@ -177,6 +177,7 @@ li {
   animation-name: shake;
   animation-duration: 1s;
   z-index: 2;
+  transform-origin: 50% 100%;
 }
 
 .grid .square:hover,
