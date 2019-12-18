@@ -77,7 +77,10 @@ export const World: React.FunctionComponent<{
       <div className="header" ref={headerRef}>
         <h1>
           {sizeControl} Emoji Island: {restartControl}
-          <button className="button" onClick={() => togglePaused()}>
+          <button
+            className="button"
+            onClick={() => (togglePaused as () => void)()}
+          >
             {!paused ? 'Pause' : 'Play'}
           </button>
         </h1>
