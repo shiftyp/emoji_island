@@ -172,12 +172,12 @@ export const useWorld = (width: number, height: number) => {
     positionRef: MutableRefObject<Coordinate>,
     id: string
   ) => {
-    return !behaviors[id]
-      ? (action: Action, steps: number) => {
-          behaviors[id] = behaviors[id] = []
-          behaviors[id].push([steps, positionRef, action])
-        }
-      : () => {}
+    delete behaviors[id]
+
+    return (action: Action, steps: number) => {
+      behaviors[id] = behaviors[id] || []
+      behaviors[id].push([steps, positionRef, action])
+    }
   }
 
   let create: Create = useCallback(
