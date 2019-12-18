@@ -1,8 +1,8 @@
 import React from 'react'
 import { Square } from './square'
 import { Coordinate } from './logic'
-import { Entity } from '../entities'
 import { story } from './utils'
+import { Entity } from './types'
 
 const BadSquare: React.FunctionComponent<{
   position: Coordinate

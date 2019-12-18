@@ -8,15 +8,25 @@ import {
   MutableRefObject,
   useEffect,
 } from 'react'
+import { sources } from '../entities'
 import {
-  Entity,
-  sources,
+  story,
+  shuffle,
+  pickRandom,
+  lookAround,
   createEntityFromSource,
-  sourcesMap,
-} from '../entities'
-import { story, shuffle, pickRandom, lookAround } from './utils'
+} from './utils'
+import { Entity, SourceEntity } from './types'
 
 export type SquareStates = 'entering' | 'exiting' | 'entered' | 'exited'
+
+export const sourcesMap: Record<string, SourceEntity> = sources.reduce(
+  (map, source) => ({
+    ...map,
+    [source.name]: source,
+  }),
+  {}
+)
 
 type World = Entity[]
 type History = number[]

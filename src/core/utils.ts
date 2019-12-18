@@ -1,4 +1,4 @@
-import { Entity } from '../entities'
+import { Entity, SourceEntity } from './types'
 import { Coordinate } from './logic'
 
 export const upcase = ([first, ...rest]: string) =>
@@ -64,3 +64,17 @@ export const lookAround = (
       .map(([dx, dy]) => peek([x + dx, y + dy]))
       .filter(entity => entity && cb(entity))
   )
+
+export const createEntityFromSource = ({
+  name,
+  component,
+  makeId,
+  startingEnergy,
+  animate,
+}: SourceEntity): Entity => ({
+  id: makeId(),
+  name,
+  component,
+  energy: startingEnergy,
+  animate,
+})

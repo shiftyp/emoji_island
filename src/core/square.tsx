@@ -1,6 +1,6 @@
 import React from 'react'
 import { Coordinate, SquareStates } from '../core/logic'
-import { Entity } from '../entities'
+import { Entity } from './types'
 
 export type SquareProps = {
   title: string

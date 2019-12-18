@@ -1,41 +1,10 @@
 import fake from 'faker'
 
-import { PositionProps } from '../core'
+import { SourceEntity } from '../core/types'
 
 import * as Animals from '../entities/animals'
 import * as Plants from '../entities/plants'
 import * as Inanimate from '../entities/inanimate'
-
-export type Entity = Readonly<{
-  name: string
-  id: string
-  component: React.FunctionComponent<PositionProps>
-  energy: number
-  animate: boolean
-}>
-
-export type SourceEntity = Readonly<{
-  name: string
-  probability: number
-  component: React.FunctionComponent
-  makeId: () => string
-  startingEnergy: number
-  animate: boolean
-}>
-
-export const createEntityFromSource = ({
-  name,
-  component,
-  makeId,
-  startingEnergy,
-  animate,
-}: SourceEntity): Entity => ({
-  id: makeId(),
-  name,
-  component,
-  energy: startingEnergy,
-  animate,
-})
 
 export const sources: SourceEntity[] = [
   {
@@ -125,11 +94,3 @@ export const sources: SourceEntity[] = [
     animate: true,
   },
 ]
-
-export const sourcesMap: Record<string, SourceEntity> = sources.reduce(
-  (map, source) => ({
-    ...map,
-    [source.name]: source,
-  }),
-  {}
-)
