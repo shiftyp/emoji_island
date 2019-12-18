@@ -171,9 +171,13 @@ export const useWorld = (width: number, height: number) => {
   let createBehave = (
     positionRef: MutableRefObject<Coordinate>,
     id: string
-  ) => (action: Action, steps: number) => {
-    behaviors[id] = behaviors[id] || []
-    behaviors[id].push([steps, positionRef, action])
+  ) => {
+    return !behaviors[id]
+      ? (action: Action, steps: number) => {
+          behaviors[id] = []
+          behaviors[id].push([steps, positionRef, action])
+        }
+      : () => {}
   }
 
   let create: Create = useCallback(
