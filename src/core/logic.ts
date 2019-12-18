@@ -174,7 +174,7 @@ export const useWorld = (width: number, height: number) => {
   ) => {
     return !behaviors[id]
       ? (action: Action, steps: number) => {
-          behaviors[id] = []
+          behaviors[id] = behaviors[id] = []
           behaviors[id].push([steps, positionRef, action])
         }
       : () => {}
