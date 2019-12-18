@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Square, PositionProps } from '../../core/square'
 import { useAction, useRandomEmoji } from '../../core/logic'
-import { story } from '../../utils'
+import { story } from '../../core/utils'
 
 export const Box: React.FunctionComponent<PositionProps> = ({
   id,

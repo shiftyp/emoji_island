@@ -1,5 +1,5 @@
-import { Entity } from './entities'
-import { Coordinate } from './core/logic'
+import { Entity } from '../entities'
+import { Coordinate } from './logic'
 
 export const upcase = ([first, ...rest]: string) =>
   `${first.toUpperCase()}${rest.join('')}`

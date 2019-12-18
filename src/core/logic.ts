@@ -14,7 +14,7 @@ import {
   createEntityFromSource,
   sourcesMap,
 } from '../entities'
-import { story, shuffle, pickRandom, lookAround } from '../utils'
+import { story, shuffle, pickRandom, lookAround } from './utils'
 
 export type SquareStates = 'entering' | 'exiting' | 'entered' | 'exited'
 

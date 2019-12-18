@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRandomEmoji, useAction, useScale } from '../../core/logic'
 import { Square, PositionProps } from '../../core/square'
-import { story } from '../../utils'
+import { story } from '../../core/utils'
 
 export const Bones: React.FunctionComponent<PositionProps> = ({
   id,

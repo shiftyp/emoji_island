@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Square, PositionProps } from '../../core/square'
 import { useAction } from '../../core/logic'
-import { story } from '../../utils'
+import { story } from '../../core/utils'
 
 export const Space: React.FunctionComponent<PositionProps> = ({
   id,

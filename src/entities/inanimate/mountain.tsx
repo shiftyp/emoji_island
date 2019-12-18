@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRandomEmoji, useScale } from '../../core/logic'
 import { Square, PositionProps } from '../../core/square'
-import { story } from '../../utils'
+import { story } from '../../core/utils'
 
 export const Mountain: React.FunctionComponent<PositionProps> = ({
   position,

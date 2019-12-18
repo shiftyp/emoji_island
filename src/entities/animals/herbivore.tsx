@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRandomEmoji, useAction } from '../../core/logic'
 import { Square, PositionProps } from '../../core/square'
-import { story, plusEnergy, minusEnergy } from '../../utils'
+import { story, plusEnergy, minusEnergy } from '../../core/utils'
 
 export const Herbivore: React.FunctionComponent<PositionProps> = ({
   id,

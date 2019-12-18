@@ -2,7 +2,7 @@ import React from 'react'
 import { Square } from './square'
 import { Coordinate } from './logic'
 import { Entity } from '../entities'
-import { story } from '../utils'
+import { story } from './utils'
 
 const BadSquare: React.FunctionComponent<{
   position: Coordinate

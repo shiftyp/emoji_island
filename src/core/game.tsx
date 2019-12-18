@@ -1,6 +1,6 @@
 import React from 'react'
 import fake from 'faker'
-import { upcase } from '../utils'
+import { upcase } from './utils'
 import { World, sizes } from './world'
 
 export const Game = () => {
