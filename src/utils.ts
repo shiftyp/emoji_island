@@ -1,16 +1,8 @@
 import { Entity } from './entities'
 import { Coordinate } from './core/logic'
 
-const directions: Coordinate[] = [
-  [1, 0],
-  [-1, 0],
-  [0, 1],
-  [0, -1],
-  [1, 1],
-  [-1, -1],
-  [1, -1],
-  [-1, 1],
-]
+export const upcase = ([first, ...rest]: string) =>
+  `${first.toUpperCase()}${rest.join('')}`
 
 export const shuffle = <T>(array: T[]): T[] => {
   let currentIndex: number = array.length
@@ -50,6 +42,17 @@ export const story = (parts: TemplateStringsArray, ...entities: Entity[]) =>
 
 export const pickRandom = <T>(arr: Array<T>): T =>
   arr[Math.trunc(Math.random() * arr.length)]
+
+const directions: Coordinate[] = [
+  [1, 0],
+  [-1, 0],
+  [0, 1],
+  [0, -1],
+  [1, 1],
+  [-1, -1],
+  [1, -1],
+  [-1, 1],
+]
 
 export const lookAround = (
   [x, y]: Coordinate,
