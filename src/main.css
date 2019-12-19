@@ -82,7 +82,6 @@ li {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
 }
 
 .header {
@@ -187,7 +186,6 @@ li {
 
 .log {
   width: 400px;
-  max-width: 50%;
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 1rem;
@@ -197,4 +195,13 @@ li {
 
 .log li {
   list-style: none;
+}
+
+@media only screen and (max-width: 1000px) {
+  h1 {
+    font-size: 1em;
+  }
+  .log {
+    width: 100%;
+  }
 }

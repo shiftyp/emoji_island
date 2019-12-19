@@ -7,10 +7,11 @@ export type GridProps = {
   left: number
   top: number
   gridRef: React.MutableRefObject<HTMLDivElement>
+  style?: React.CSSProperties
 }
 
 export const Grid: React.FunctionComponent<GridProps> = React.memo(
-  ({ height, width, scale, children, left, top, gridRef }) => (
+  ({ height, width, scale, children, left, top, gridRef, style }) => (
     <div
       key="grid"
       ref={gridRef}
@@ -23,6 +24,7 @@ export const Grid: React.FunctionComponent<GridProps> = React.memo(
         width: `${width * 3}rem`,
         transform: scale !== null ? `scale(${scale}) translate(25%, 25%)` : '',
         visibility: scale !== null ? 'visible' : 'hidden',
+        ...(style || {}),
       }}
     >
       <div className="grid-inner" key="grid-inner">
