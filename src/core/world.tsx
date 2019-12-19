@@ -122,7 +122,7 @@ export const World: React.FunctionComponent<{
             display: showMenu && !showSidebar ? 'none' : undefined,
           }}
         >
-          <h2>Welcome to {name} Island!</h2>
+          <h2>Welcome to "{name}" Island!</h2>
           <p>
             A world simulation of emoji proportions! What are the next steps for
             your emoji island? It's up to you, your emojis, and your mouse or
