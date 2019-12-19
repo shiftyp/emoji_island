@@ -108,7 +108,7 @@ export const World: React.FunctionComponent<{
               <button
                 className="button"
                 onClick={() => {
-                  ;(togglePaused as () => void)()
+                  togglePaused(true)
                   ;(toggleSidebar as () => void)()
                 }}
               >

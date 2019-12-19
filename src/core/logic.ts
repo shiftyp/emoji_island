@@ -92,7 +92,7 @@ export const useWorld = (width: number, height: number) => {
   ])
   const step = useRef<number>(0)
   const [paused, togglePaused] = useReducer(
-    (paused, _: never) => !paused,
+    (last, input = null) => (input != null ? input : !last),
     false
   )
 
