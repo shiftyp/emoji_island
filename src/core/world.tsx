@@ -27,7 +27,7 @@ export const World: React.FunctionComponent<{
   const [showMenu, setMenu] = React.useState<boolean>(initialMenu)
   const [showSidebar, toggleSidebar] = React.useReducer(
     (last, input = null) => (input != null ? input : !last),
-    !initialMenu
+    initialMenu
   )
 
   const resizeHandler = () => {
