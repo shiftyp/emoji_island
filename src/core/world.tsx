@@ -44,7 +44,7 @@ export const World: React.FunctionComponent<{
           )
         )
       }
-
+      toggleSidebar(true)
       setMenu(false)
     } else {
       const viewportWidth = window.innerWidth
@@ -56,7 +56,7 @@ export const World: React.FunctionComponent<{
           viewportHeight / (gridRef.current.offsetHeight * 1.5)
         )
       )
-
+      toggleSidebar(false)
       setMenu(true)
     }
   }
