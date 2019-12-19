@@ -119,7 +119,7 @@ export const World: React.FunctionComponent<{
           className="log"
           ref={logRef}
           style={{
-            display: showSidebar ? 'none' : undefined,
+            display: !showMenu || showSidebar ? 'none' : undefined,
           }}
         >
           <h2>Welcome to {name} Island!</h2>
