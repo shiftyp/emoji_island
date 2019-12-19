@@ -107,7 +107,10 @@ export const World: React.FunctionComponent<{
             {showMenu && (
               <button
                 className="button"
-                onClick={() => (toggleSidebar as () => {})()}
+                onClick={() => {
+                  ;(togglePaused as () => void)()
+                  ;(toggleSidebar as () => void)()
+                }}
               >
                 {showSidebar ? 'World' : 'Help'}
               </button>
