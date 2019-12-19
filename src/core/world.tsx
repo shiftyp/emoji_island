@@ -109,7 +109,7 @@ export const World: React.FunctionComponent<{
                 className="button"
                 onClick={() => (toggleSidebar as () => {})()}
               >
-                {showSidebar ? 'World' : 'Info'}
+                {showSidebar ? 'World' : 'Help'}
               </button>
             )}
           </h1>
