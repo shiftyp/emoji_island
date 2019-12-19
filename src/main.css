@@ -218,8 +218,9 @@ li {
   h1 {
     font-size: 3rem;
   }
+  h2,
   p,
   li {
-    font-size: 2em;
+    font-size: 2rem;
   }
 }
