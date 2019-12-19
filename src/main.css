@@ -6,6 +6,14 @@ body {
   font-size: 14px;
 }
 
+h2 {
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 1.8em;
+}
+
 h1,
 h2,
 h3,
@@ -13,6 +21,7 @@ li,
 p {
   margin: 0 0 0.5rem 0;
   font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
   color: white;
 }
 
@@ -24,11 +33,12 @@ p a {
   margin: 0 0 0.5rem 0;
   font-family: 'Courier New', Courier, monospace;
   color: yellow;
+  font-weight: bold;
 }
 
 p,
 li {
-  font-size: 1em;
+  font-size: 1.2em;
 }
 
 @keyframes shake {
