@@ -15,6 +15,16 @@ p {
   color: white;
 }
 
+h1 a,
+h2 a,
+h3 a,
+li a,
+p a {
+  margin: 0 0 0.5rem 0;
+  font-family: 'Courier New', Courier, monospace;
+  color: yellow;
+}
+
 p,
 li {
   font-size: 0.75em;
