@@ -7,11 +7,11 @@ body {
 }
 
 h2 {
-  font-size: 2em;
+  font-size: 2rem;
 }
 
 h3 {
-  font-size: 1.8em;
+  font-size: 1.5rem;
 }
 
 h1,
@@ -38,7 +38,7 @@ p a {
 
 p,
 li {
-  font-size: 1.2em;
+  font-size: 1.2rem;
 }
 
 @keyframes shake {
@@ -95,6 +95,12 @@ li {
   padding: 0.5rem;
   border-radius: 0.5rem;
   font-size: 1em;
+  margin-right: 1rem;
+}
+
+.button:last-child,
+.select:last-child {
+  margin-right: 0;
 }
 
 .layout {
@@ -224,14 +230,18 @@ li {
   }
 }
 
-@media only screen and (max-width: 640px) {
-  h1 {
-    font-size: 3rem;
+@media only screen and (min-resolution: 200dpi) {
+  body {
+    font-size: 20px;
   }
-  h2,
-  h3,
+  h2 {
+    font-size: 6rem;
+  }
+  h3 {
+    font-size: 5rem;
+  }
   p,
   li {
-    font-size: 2em;
+    font-size: 3rem;
   }
 }
