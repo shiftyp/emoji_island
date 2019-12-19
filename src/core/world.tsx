@@ -133,7 +133,7 @@ export const World: React.FunctionComponent<{
             <a href="https://codesandbox.io/s/github/shiftyp/emoji_island/tree/master/?fontsize=14&hidenavigation=1&theme=dark">
               edit the code for this game
             </a>
-            ! Want to learn how?
+            ! Want to learn how?{' '}
             <a href="https://dev.to/shiftyp/introducing-emoji-island-2n7d">
               Watch this video
             </a>
