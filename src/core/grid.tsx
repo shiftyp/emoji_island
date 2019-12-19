@@ -23,7 +23,6 @@ export const Grid: React.FunctionComponent<GridProps> = React.memo(
         height: `${height * 3}rem`,
         width: `${width * 3}rem`,
         transform: scale !== null ? `scale(${scale}) translate(25%, 25%)` : '',
-        visibility: scale !== null ? 'visible' : 'hidden',
         ...(style || {}),
       }}
     >

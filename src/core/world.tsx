@@ -192,6 +192,7 @@ export const World: React.FunctionComponent<{
           gridRef={gridRef}
           style={{
             display: showSidebar && showMenu ? 'none' : undefined,
+            visibility: scale !== null ? 'visible' : 'hidden',
           }}
           top={headerRef.current && headerRef.current.offsetHeight}
           left={

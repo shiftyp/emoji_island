@@ -70,6 +70,15 @@ li {
   }
 }
 
+@keyframes stepIntoAWorld {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .button,
 .select {
   padding: 0.5rem;
@@ -99,6 +108,7 @@ li {
   background-color: rgb(146, 101, 42);
   padding: 2rem;
   user-select: none;
+  animation: stepIntoAWorld 2s;
 }
 
 .grid:before {
