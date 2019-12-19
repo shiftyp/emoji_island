@@ -131,11 +131,11 @@ export const World: React.FunctionComponent<{
             your emoji island? It's up to you, your emojis, and your mouse or
             keyboard! Or take it to the next level and{' '}
             <a href="https://codesandbox.io/s/github/shiftyp/emoji_island/tree/master/?fontsize=14&hidenavigation=1&theme=dark">
-              edit the code for this game!
-            </a>{' '}
-            Want to learn how? Watch{' '}
+              edit the code for this game
+            </a>
+            ! Want to learn how?
             <a href="https://dev.to/shiftyp/introducing-emoji-island-2n7d">
-              this video
+              Watch this video
             </a>
             !
           </p>
