@@ -27,7 +27,7 @@ export const World: React.FunctionComponent<{
   const [showMenu, setMenu] = React.useState<boolean>(initialMenu)
   const [showSidebar, toggleSidebar] = React.useReducer(
     (last, input = null) => (input != null ? input : !last),
-    initialMenu
+    true
   )
 
   const resizeHandler = () => {
@@ -114,67 +114,71 @@ export const World: React.FunctionComponent<{
             )}
           </h1>
         </div>
-        {showSidebar && showMenu && (
-          <div className="log" ref={logRef}>
-            <h2>Welcome to {name} Island!</h2>
-            <p>
-              A world simulation of emoji proportions! What are the next steps
-              for your emoji island? It's up to you, your emojis, and your mouse
-              or keyboard! Or take it to the next level and{' '}
-              <a href="https://codesandbox.io/s/github/shiftyp/emoji_island/tree/master/?fontsize=14&hidenavigation=1&theme=dark">
-                edit the world codesandbox!
-              </a>
-            </p>
-            <h3>Populations</h3>
-            <dl className="scores">
-              {Object.keys(sourcesMap)
-                .sort(
-                  (a, b) =>
-                    ((scores[b] && scores[b].count) || 0) -
-                    ((scores[a] && scores[a].count) || 0)
-                )
-                .map((name, i) => {
-                  const avgEnergy = scores[name]
-                    ? Math.floor(
-                        (scores[name].energy / scores[name].count) * 100
-                      ) / 100
-                    : 0
-                  const count = scores[name] ? scores[name].count : 0
-                  return (
-                    <li key={name}>
-                      {count !== 0 ? (
-                        <b>
-                          {i + 1}: {name}
-                        </b>
-                      ) : (
-                        <s>{name}</s>
-                      )}
-                      {count !== 0 && <dd>count: {count}</dd>}
-                      {avgEnergy !== 0 && <dd>avg energy: {avgEnergy}</dd>}
-                    </li>
-                  )
-                })}
-            </dl>
-            <h3>Log:</h3>
-            <p>(open developer console for updates)</p>
-            <ul>
-              {history.slice(-4).reduce((output, count, index) => {
-                const step =
-                  history.length - Math.min(history.length, 4) + index
 
-                return [
-                  <li key={`history-${step}`}>
-                    <span role="img" aria-label="checkmark">
-                      ✅
-                    </span>
-                    Step {step} [{count} updates]
-                  </li>,
-                  ...output,
-                ]
-              }, [])}
-            </ul>
-          </div>
-        )}
+        <div
+          className="log"
+          ref={logRef}
+          style={{
+            display: showSidebar ? 'none' : undefined,
+          }}
+        >
+          <h2>Welcome to {name} Island!</h2>
+          <p>
+            A world simulation of emoji proportions! What are the next steps for
+            your emoji island? It's up to you, your emojis, and your mouse or
+            keyboard! Or take it to the next level and{' '}
+            <a href="https://codesandbox.io/s/github/shiftyp/emoji_island/tree/master/?fontsize=14&hidenavigation=1&theme=dark">
+              edit the world codesandbox!
+            </a>
+          </p>
+          <h3>Populations</h3>
+          <dl className="scores">
+            {Object.keys(sourcesMap)
+              .sort(
+                (a, b) =>
+                  ((scores[b] && scores[b].count) || 0) -
+                  ((scores[a] && scores[a].count) || 0)
+              )
+              .map((name, i) => {
+                const avgEnergy = scores[name]
+                  ? Math.floor(
+                      (scores[name].energy / scores[name].count) * 100
+                    ) / 100
+                  : 0
+                const count = scores[name] ? scores[name].count : 0
+                return (
+                  <li key={name}>
+                    {count !== 0 ? (
+                      <b>
+                        {i + 1}: {name}
+                      </b>
+                    ) : (
+                      <s>{name}</s>
+                    )}
+                    {count !== 0 && <dd>count: {count}</dd>}
+                    {avgEnergy !== 0 && <dd>avg energy: {avgEnergy}</dd>}
+                  </li>
+                )
+              })}
+          </dl>
+          <h3>Log:</h3>
+          <p>(open developer console for updates)</p>
+          <ul>
+            {history.slice(-4).reduce((output, count, index) => {
+              const step = history.length - Math.min(history.length, 4) + index
+
+              return [
+                <li key={`history-${step}`}>
+                  <span role="img" aria-label="checkmark">
+                    ✅
+                  </span>
+                  Step {step} [{count} updates]
+                </li>,
+                ...output,
+              ]
+            }, [])}
+          </ul>
+        </div>
       </div>
       <WorldContext.Provider
         key="provider"
@@ -184,7 +188,7 @@ export const World: React.FunctionComponent<{
           key={name}
           gridRef={gridRef}
           style={{
-            display: showSidebar && showMenu ? 'none' : 'inherit',
+            display: showSidebar && showMenu ? 'none' : undefined,
           }}
           top={headerRef.current && headerRef.current.offsetHeight}
           left={
