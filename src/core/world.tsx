@@ -87,7 +87,7 @@ export const World: React.FunctionComponent<{
       <div className="log" ref={logRef}>
         <h2>Welcome to {name} Island!</h2>
         <p>
-          An world simulation of emoji proportions! What are the next steps for
+          A world simulation of emoji proportions! What are the next steps for
           your emoji island? It's up to you, your emojis, and your mouse or
           keyboard! Or take it to the next level and{' '}
           <a href="https://codesandbox.io/s/github/shiftyp/emoji_island/tree/master/?fontsize=14&hidenavigation=1&theme=dark">
