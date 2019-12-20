@@ -199,7 +199,7 @@ export const World: React.FunctionComponent<{
                   <span role="img" aria-label="checkmark">
                     {stepError && localStep === step ? '❌' : '✅'}
                   </span>
-                  Step {localStep} [{entries.length} updates]
+                  Step {localStep} [{history[localStep].length - 1} updates]
                 </li>,
                 ...output,
               ]
