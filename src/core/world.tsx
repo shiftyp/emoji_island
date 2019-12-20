@@ -32,7 +32,7 @@ export const World: React.FunctionComponent<{
 
   const resizeHandler = () => {
     if (logRef.current && headerRef.current && gridRef.current) {
-      if (window.innerWidth > 1000) {
+      if (window.innerWidth > 1000 && window.devicePixelRatio <= 2) {
         const viewportWidth = window.innerWidth - logRef.current.offsetWidth
         const viewportHeight =
           window.innerHeight - headerRef.current.offsetHeight

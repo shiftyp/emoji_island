@@ -100,7 +100,7 @@ li {
 
 .button,
 .select {
-  padding: 0.5rem;
+  padding: 1.5rem;
   border-radius: 0.5rem;
   font-size: 1em;
   margin-right: 1rem;
@@ -250,9 +250,6 @@ li {
 }
 
 @media only screen and (max-width: 570px) {
-  h1 {
-    font-size: 1rem;
-  }
   .grid-outer {
     padding: 1.5rem 0;
   }
@@ -263,7 +260,7 @@ li {
     font-size: 20px;
   }
   h1 {
-    font-size: 2.7rem;
+    font-size: 2rem;
   }
   h2 {
     font-size: 6rem;
