@@ -4,6 +4,7 @@ body {
   overflow: visible;
   background: rgb(40, 109, 199);
   font-size: 14px;
+  max-width: 100vw;
 }
 
 h1 {
@@ -113,11 +114,10 @@ li {
 .layout {
   overflow: hidden;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
 .header {
+  position: absolute;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   padding-left: 1rem;
@@ -156,6 +156,7 @@ li {
   right: -3rem;
   border-radius: 3rem;
   z-index: -1;
+  animation: stepIntoAWorld 2s;
 }
 
 .grid:after {
@@ -170,6 +171,7 @@ li {
   right: -5.5rem;
   border-radius: 3rem;
   z-index: -1;
+  animation: stepIntoAWorld 2s;
 }
 
 .grid-inner {
@@ -227,6 +229,7 @@ li {
 }
 
 .log {
+  position: absolute;
   width: 400px;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -251,7 +254,7 @@ li {
     font-size: 1rem;
   }
   .grid-outer {
-    padding: 3rem 0 0 0;
+    padding: 1.5rem 0;
   }
 }
 

@@ -31,11 +31,7 @@ export const Game = () => {
       name={key.split('~~')[0]}
       key={key}
       size={size}
-      restartControl={
-        <button className="button" onClick={() => setSize(size)}>
-          Restart
-        </button>
-      }
+      onRestart={() => setSize(size)}
       sizeControl={
         <select
           className="select"

@@ -15,9 +15,9 @@ export const sizes = {
 export const World: React.FunctionComponent<{
   size: keyof typeof sizes
   sizeControl: JSX.Element
-  restartControl: JSX.Element
+  onRestart: () => void
   name: string
-}> = ({ size, sizeControl, name, restartControl }) => {
+}> = ({ size, sizeControl, name, onRestart }) => {
   const logRef = React.useRef<HTMLDivElement>(null)
   const headerRef = React.useRef<HTMLDivElement>(null)
   const gridRef = React.useRef<HTMLDivElement>(null)
@@ -31,8 +31,8 @@ export const World: React.FunctionComponent<{
   >((last, input = null) => (input != null ? input : !last), true)
 
   const resizeHandler = () => {
-    if (window.innerWidth > 1000) {
-      if (logRef.current && headerRef.current && gridRef.current) {
+    if (logRef.current && headerRef.current && gridRef.current) {
+      if (window.innerWidth > 1000) {
         const viewportWidth = window.innerWidth - logRef.current.offsetWidth
         const viewportHeight =
           window.innerHeight - headerRef.current.offsetHeight
@@ -43,21 +43,22 @@ export const World: React.FunctionComponent<{
             viewportHeight / gridRef.current.offsetHeight
           )
         )
-      }
-      toggleSidebar(true)
-      setMenu(false)
-    } else {
-      const viewportWidth = window.innerWidth
-      const viewportHeight = window.innerHeight - headerRef.current.offsetHeight
+        toggleSidebar(true)
+        setMenu(false)
+      } else {
+        const viewportWidth = window.innerWidth
+        const viewportHeight =
+          window.innerHeight - headerRef.current.offsetHeight
 
-      setScale(
-        Math.min(
-          viewportWidth / gridRef.current.offsetWidth,
-          viewportHeight / gridRef.current.offsetHeight
+        setScale(
+          Math.min(
+            viewportWidth / gridRef.current.offsetWidth,
+            viewportHeight / gridRef.current.offsetHeight
+          )
         )
-      )
-      toggleSidebar(false)
-      setMenu(true)
+        toggleSidebar(false)
+        setMenu(true)
+      }
     }
   }
 
@@ -97,7 +98,10 @@ export const World: React.FunctionComponent<{
       <div className="layout" key="layout">
         <div className="header" ref={headerRef}>
           <h1>
-            {sizeControl} Emoji Island: {restartControl}
+            {sizeControl} Emoji Island:{' '}
+            <button className="button" onClick={() => onRestart()}>
+              Restart
+            </button>
             <button
               className="button"
               onClick={() => (togglePaused as () => void)()}
@@ -123,6 +127,7 @@ export const World: React.FunctionComponent<{
           ref={logRef}
           style={{
             display: showMenu && !showSidebar ? 'none' : undefined,
+            top: headerRef.current ? `${headerRef.current.offsetHeight}px` : 0,
           }}
         >
           <h2>Welcome to "{name}" Island!</h2>

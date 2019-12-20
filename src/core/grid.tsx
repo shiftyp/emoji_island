@@ -7,7 +7,6 @@ export type GridProps = {
   left: number
   top: number
   gridRef: React.MutableRefObject<HTMLDivElement>
-  gridOuterRef: React.MutableRefObject<HTMLDivElement>
   style?: React.CSSProperties
 }
 
