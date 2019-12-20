@@ -10,7 +10,12 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 ## Pull Request Process
 
-TBD
+When opening a PR, put the following sections in the description:
+
+1. Changes: A bulleted list of the changes in the PR as you see them
+2. Screencaptures: GIF screen captures of the changes made using [LICEcap](https://www.cockos.com/licecap/) or a similar tool.
+
+That's it! If there are issues with your PR the maintainer(s) will work within reason to help guide your efforts.
 
 ## Code of Conduct
 
