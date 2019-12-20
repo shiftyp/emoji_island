@@ -14,7 +14,7 @@
       src="https://www.googletagmanager.com/gtag/js?id=UA-154883948-1"
     ></script>
     <script>
-      if (process.env.GOOGLE_ANALYTICS_ID) {
+      if (!!process.env.GOOGLE_ANALYTICS_ID) {
         window.dataLayer = window.dataLayer || []
         function gtag() {
           dataLayer.push(arguments)
