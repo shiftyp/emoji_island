@@ -129,7 +129,7 @@ li {
   padding: 3rem;
   box-sizing: content-box;
   transform-origin: 0% 0%;
-  transition: transform 1s ease-out;
+  padding: 3rem;
 }
 
 .grid {
