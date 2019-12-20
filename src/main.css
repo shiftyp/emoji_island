@@ -6,8 +6,12 @@ body {
   font-size: 14px;
 }
 
+h1 {
+  font-size: 1.5rem;
+}
+
 h2 {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 h3 {
@@ -21,7 +25,6 @@ li,
 p {
   margin: 0 0 0.5rem 0;
   font-family: 'Courier New', Courier, monospace;
-  font-weight: bold;
   color: white;
 }
 
@@ -230,9 +233,18 @@ li {
   }
 }
 
+@media only screen and (max-width: 570px) {
+  h1 {
+    font-size: 1rem;
+  }
+}
+
 @media only screen and (min-resolution: 200dpi) {
   body {
     font-size: 20px;
+  }
+  h1 {
+    font-size: 2.7rem;
   }
   h2 {
     font-size: 6rem;
