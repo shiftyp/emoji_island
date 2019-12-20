@@ -138,8 +138,8 @@ export const World: React.FunctionComponent<{
           <h3>How to play</h3>
           <p>
             Emoji Island is a world simulation of emoji proportions! What are
-            the next steps? It's up to you, your emojis, and your mouse or
-            keyboard!
+            the next steps? It's up to you, your emojis, and your mouse /
+            keyboard / touch / assistive device!
           </p>
           <h3>How to edit</h3>
           <p>
