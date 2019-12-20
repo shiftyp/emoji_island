@@ -84,6 +84,8 @@ export const WorldContext = createContext<{
   ) => (action: Action, steps: number) => void
   replace: Replace
   create: Create
+  ids: Record<string, Entity>
+  setStepError: (error: [Error, Entity]) => void
 }>(null)
 
 export const useWorld = (width: number, height: number) => {
@@ -92,7 +94,7 @@ export const useWorld = (width: number, height: number) => {
     width,
   ])
   const [step, setStep] = useState<number>(null)
-  const stepError = useRef<[Error, Entity]>(null)
+  const [stepError, setStepError] = useState<[Error, Entity]>(null)
   const [paused, togglePaused] = useReducer(
     (last, input = null) => (input != null ? input : !last),
     false
@@ -206,22 +208,22 @@ export const useWorld = (width: number, height: number) => {
         const entries = history[step] || []
         if (step !== null) {
           console.groupCollapsed(
-            `${stepError.current ? '❌' : '✅'} Step ${step} [${
+            `${stepError ? '❌' : '✅'} Step ${step} [${
               entries.length
             } updates]`
           )
           entries.forEach((entry, i) => console.log(entry))
 
-          if (stepError.current) {
-            const [error, entity] = stepError.current
+          if (stepError) {
+            const [error, entity] = stepError
 
-            console.log(story`${entity} threw `, error)
+            console.error(story`${entity} threw `, error)
           }
 
           console.groupEnd()
         }
 
-        if (stepError.current) {
+        if (stepError) {
           setStep(step)
           return clearInterval(interval)
         }
@@ -236,7 +238,7 @@ export const useWorld = (width: number, height: number) => {
             const entityBehaviors = behaviors[key]
 
             entityBehaviors.forEach(([steps, positionRef, action]) => {
-              if (step % steps === 0 && !stepError.current) {
+              if (step % steps === 0 && !stepError) {
                 try {
                   action({
                     replace: (
@@ -282,7 +284,7 @@ export const useWorld = (width: number, height: number) => {
                   })
                 } catch (e) {
                   debugger
-                  stepError.current = [e, ids[key]]
+                  setStepError([e, ids[key]])
                 }
               }
             })
@@ -306,6 +308,7 @@ export const useWorld = (width: number, height: number) => {
   })
 
   return {
+    ids,
     world,
     createBehave,
     replace,
@@ -314,7 +317,8 @@ export const useWorld = (width: number, height: number) => {
     togglePaused,
     paused,
     step: step,
-    stepError: stepError.current,
+    stepError: stepError,
+    setStepError,
   }
 }
 
@@ -333,7 +337,9 @@ export const useAction = (
   state: SquareStates,
   id: string
 ) => {
-  const { createBehave, replace, create } = useContext(WorldContext)
+  const { createBehave, replace, create, ids, setStepError } = useContext(
+    WorldContext
+  )
   const positionRef = usePosition(position)
 
   if (state !== 'entered') {
@@ -345,7 +351,14 @@ export const useAction = (
 
   return {
     behave: createBehave(positionRef, id),
-    act: (cb: (context: { replace: Replace; create: Create }) => void) => () =>
-      cb({ replace, create }),
+    act: (
+      cb: (context: { replace: Replace; create: Create }) => void
+    ) => () => {
+      try {
+        cb({ replace, create })
+      } catch (e) {
+        setStepError([e, ids[id]])
+      }
+    },
   }
 }

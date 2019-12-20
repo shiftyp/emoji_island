@@ -73,6 +73,7 @@ export const World: React.FunctionComponent<{
   }, [logRef.current, gridRef.current, headerRef.current])
 
   const {
+    ids,
     world,
     createBehave,
     history,
@@ -82,6 +83,7 @@ export const World: React.FunctionComponent<{
     paused,
     step,
     stepError,
+    setStepError,
   } = useWorld(width, height)
 
   const scores = world.reduce(
@@ -185,7 +187,7 @@ export const World: React.FunctionComponent<{
               return [
                 <li key={`history-${localStep}`}>
                   <span role="img" aria-label="checkmark">
-                    {stepError && localStep === step - 1 ? '❌' : '✅'}
+                    {stepError && localStep === step ? '❌' : '✅'}
                   </span>
                   Step {localStep} [{entries.length} updates]
                 </li>,
@@ -197,7 +199,7 @@ export const World: React.FunctionComponent<{
       </div>
       <WorldContext.Provider
         key="provider"
-        value={{ createBehave, replace, create }}
+        value={{ createBehave, replace, create, ids, setStepError }}
       >
         <Grid
           key={name}
