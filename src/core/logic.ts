@@ -202,7 +202,7 @@ export const useWorld = (width: number, height: number) => {
   )
 
   useEffect(() => {
-    if (step !== null) {
+    if (step !== null && history[step]) {
       const entries = history[step] || []
 
       console.groupCollapsed(
@@ -219,7 +219,7 @@ export const useWorld = (width: number, height: number) => {
 
       console.groupEnd()
     }
-  }, [history])
+  }, [step, history])
 
   useEffect(() => {
     if (!paused) {
