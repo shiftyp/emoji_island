@@ -29,8 +29,8 @@ export const sourcesMap: Record<string, SourceEntity> = sources.reduce(
 )
 
 type World = Entity[]
-type History = number[]
-type Update = [number, string, Entity]
+type History = string[][]
+type Update = [number, string[], Entity]
 
 const generateWorld = (width: number, height: number) => {
   const world: World = []
@@ -63,7 +63,7 @@ export const useScale = (fn: () => number) => useMemo(fn, [])
 
 export type Look = (name: string) => Entity | null
 export type Replace = (
-  historyEntry: string,
+  historyEntry: string | string[],
   target: Entity,
   replacement: Entity,
   filler?: Entity
@@ -106,7 +106,6 @@ export const useWorld = (width: number, height: number) => {
       updates: Update[]
     ) =>
       updates.reduce(({ world, history }, [index, historyEntry, entity]) => {
-        console.log(step.current, historyEntry)
         const newWorld = [
           ...world.slice(0, index),
           entity,
@@ -124,7 +123,7 @@ export const useWorld = (width: number, height: number) => {
           world: newWorld,
           history: [
             ...history.slice(0, step.current),
-            (history[step.current] || 0) + 1,
+            [...(history[step.current] || []), historyEntry],
             ...history.slice(step.current + 1),
           ],
         }
@@ -160,12 +159,18 @@ export const useWorld = (width: number, height: number) => {
       entity => entity.id === replacement.id
     )
     const index = world.findIndex(entity => entity.id === target.id)
-    const updates: Update[] = [[index, historyEntry, replacement]]
+    const updates: Update[] = [
+      [
+        index,
+        Array.isArray(historyEntry) ? historyEntry : [historyEntry],
+        replacement,
+      ],
+    ]
 
     if (replacementIndex >= 0) {
       updates.push([
         replacementIndex,
-        story`${replacement} left ${filler}`,
+        [story()`${replacement} left ${filler}`],
         filler,
       ])
     }
@@ -199,6 +204,14 @@ export const useWorld = (width: number, height: number) => {
     if (!paused) {
       const interval = setInterval(() => {
         if (paused) return
+        if (step.current && history[step.current]) {
+          console.groupCollapsed(`✅ Step ${step.current}`)
+          history[step.current].forEach((entry, i) => console.log(...entry))
+          console.groupEnd()
+        }
+
+        console.groupEnd()
+
         step.current++
         const { updates } = shuffle(Object.keys(behaviors)).reduce(
           ({ updates, updatedIds }, key) => {
@@ -230,7 +243,13 @@ export const useWorld = (width: number, height: number) => {
                       return
                     }
                     if (index >= 0) {
-                      updates[index] = [index, historyEntry, replacement]
+                      updates[index] = [
+                        index,
+                        Array.isArray(historyEntry)
+                          ? historyEntry
+                          : [historyEntry],
+                        replacement,
+                      ]
                       updatedIds[replacement.id] = true
                       updatedIds[target.id] = true
                     }
@@ -238,7 +257,7 @@ export const useWorld = (width: number, height: number) => {
                       updatedIds[filler.id] = true
                       updates[replacementIndex] = [
                         replacementIndex,
-                        story`${replacement} left ${filler}`,
+                        [story()`${replacement} left ${filler}`],
                         filler,
                       ]
                     }

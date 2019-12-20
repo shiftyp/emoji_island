@@ -177,7 +177,7 @@ export const World: React.FunctionComponent<{
           <h3>Log:</h3>
           <p>(open developer console for updates)</p>
           <ul>
-            {history.slice(-4).reduce((output, count, index) => {
+            {history.slice(-4).reduce((output, entries, index) => {
               const step = history.length - Math.min(history.length, 4) + index
 
               return [
@@ -185,7 +185,7 @@ export const World: React.FunctionComponent<{
                   <span role="img" aria-label="checkmark">
                     ✅
                   </span>
-                  Step {step} [{count} updates]
+                  Step {step} [{entries.length} updates]
                 </li>,
                 ...output,
               ]
