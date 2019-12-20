@@ -139,11 +139,17 @@ export const World: React.FunctionComponent<{
             A world simulation of emoji proportions! What are the next steps for
             your emoji island? It's up to you, your emojis, and your mouse or
             keyboard! Or take it to the next level and{' '}
-            <a href="https://codesandbox.io/embed/github/shiftyp/emoji_island/tree/master/?expanddevtools=1&fontsize=13&hidenavigation=1&module=%2Fsrc%2Fentities%2Findex.ts">
+            <a
+              target="_blank"
+              href="https://codesandbox.io/embed/github/shiftyp/emoji_island/tree/master/?expanddevtools=1&fontsize=13&hidenavigation=1&module=%2Fsrc%2Fentities%2Findex.ts"
+            >
               edit the code for this game
             </a>
             ! Want to learn how?{' '}
-            <a href="https://dev.to/shiftyp/introducing-emoji-island-2n7d">
+            <a
+              target="_blank"
+              href="https://dev.to/shiftyp/introducing-emoji-island-2n7d"
+            >
               Watch this video
             </a>
             !
@@ -179,7 +185,11 @@ export const World: React.FunctionComponent<{
               })}
           </dl>
           <h3>Log:</h3>
-          <p>(open developer console for updates)</p>
+          <p>
+            {stepError
+              ? `An error occured, restart or open developer console for more details`
+              : `(open developer console for updates)`}
+          </p>
           <ul>
             {history.slice(-4).reduce((output, entries, index) => {
               const localStep = step - Math.min(history.length, 4) + index + 1
