@@ -135,17 +135,26 @@ export const World: React.FunctionComponent<{
           }}
         >
           <h2>Welcome to "{name}" Island!</h2>
+          <h3>How to play</h3>
           <p>
             A world simulation of emoji proportions! What are the next steps for
             your emoji island? It's up to you, your emojis, and your mouse or
-            keyboard! Or take it to the next level and{' '}
+            keyboard!
+          </p>
+          <h3>How to edit</h3>
+          <p>
+            Take your programming skills to the next level and{' '}
             <a
               target="_blank"
               href="https://codesandbox.io/embed/github/shiftyp/emoji_island/tree/master/?expanddevtools=1&fontsize=13&hidenavigation=1&module=%2Fsrc%2Fentities%2Findex.ts"
             >
               edit the code for this game
+            </a>{' '}
+            or{' '}
+            <a href="https://github.com/shiftyp/emoji_island">
+              clone the repository
             </a>
-            ! Want to learn how?{' '}
+            ! Want to learn how to make changes?{' '}
             <a
               target="_blank"
               href="https://dev.to/shiftyp/introducing-emoji-island-2n7d"
