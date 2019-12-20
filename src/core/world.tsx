@@ -192,14 +192,14 @@ export const World: React.FunctionComponent<{
           </p>
           <ul>
             {history.slice(-4).reduce((output, entries, index) => {
-              const localStep = step - Math.min(history.length, 4) + index + 1
+              const localStep = step - Math.min(history.length - 1, 3) + index
 
               return [
                 <li key={`history-${localStep}`}>
                   <span role="img" aria-label="checkmark">
                     {stepError && localStep === step ? '❌' : '✅'}
                   </span>
-                  Step {localStep} [{history[localStep].length - 1} updates]
+                  Step {localStep} [{entries.length} updates]
                 </li>,
                 ...output,
               ]
