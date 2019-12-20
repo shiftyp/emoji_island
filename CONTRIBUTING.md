@@ -2,10 +2,6 @@
 
 Hi, welcome to Emoji Island, we're happy to have your help! If you've read and follow this document, you are welcome to contribute! If you want to pair with [this repository's creator](https://twitter.com/shiftyp) on some edits, send him a tweet with what you'd like to change and he'll do his best!
 
-# Contributing
-
-When contributing to this repository, please first discuss the change you wish to make via issue before making a change.
-
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
 ## Pull Request Process
