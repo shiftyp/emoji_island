@@ -202,31 +202,29 @@ export const useWorld = (width: number, height: number) => {
   )
 
   useEffect(() => {
+    if (step !== null) {
+      const entries = history[step] || []
+
+      console.groupCollapsed(
+        `${stepError ? '❌' : '✅'} Step ${step} [${entries.length} updates]`
+      )
+
+      entries.forEach((entry, i) => console.log(entry))
+
+      if (stepError) {
+        const [error, entity] = stepError
+
+        console.error(story`${entity} threw `, error)
+      }
+
+      console.groupEnd()
+    }
+  }, [history])
+
+  useEffect(() => {
     if (!paused) {
       const interval = setInterval(() => {
         if (paused) return
-        const entries = history[step] || []
-        if (step !== null) {
-          console.groupCollapsed(
-            `${stepError ? '❌' : '✅'} Step ${step} [${
-              entries.length
-            } updates]`
-          )
-          entries.forEach((entry, i) => console.log(entry))
-
-          if (stepError) {
-            const [error, entity] = stepError
-
-            console.error(story`${entity} threw `, error)
-          }
-
-          console.groupEnd()
-        }
-
-        if (stepError) {
-          setStep(step)
-          return clearInterval(interval)
-        }
 
         step == null ? setStep(0) : setStep(step + 1)
 
