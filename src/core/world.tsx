@@ -25,10 +25,9 @@ export const World: React.FunctionComponent<{
   const initialMenu = React.useMemo(() => window.innerWidth < 1000, [])
   const [scale, setScale] = React.useState<number>(null)
   const [showMenu, setMenu] = React.useState<boolean>(initialMenu)
-  const [showSidebar, toggleSidebar] = React.useReducer(
-    (last, input = null) => (input != null ? input : !last),
-    true
-  )
+  const [showSidebar, toggleSidebar] = React.useReducer<
+    (state: Boolean, arg?: boolean) => boolean
+  >((last, input = null) => (input != null ? input : !last), true)
 
   const resizeHandler = () => {
     if (window.innerWidth > 1000) {
@@ -109,7 +108,7 @@ export const World: React.FunctionComponent<{
                 className="button"
                 onClick={() => {
                   togglePaused(true)
-                  ;(toggleSidebar as () => void)()
+                  toggleSidebar()
                 }}
               >
                 {showSidebar ? 'World' : 'Help'}
@@ -130,7 +129,7 @@ export const World: React.FunctionComponent<{
             A world simulation of emoji proportions! What are the next steps for
             your emoji island? It's up to you, your emojis, and your mouse or
             keyboard! Or take it to the next level and{' '}
-            <a href="https://codesandbox.io/s/github/shiftyp/emoji_island/tree/master/?fontsize=14&hidenavigation=1&theme=dark">
+            <a href="https://codesandbox.io/embed/github/shiftyp/emoji_island/tree/master/?expanddevtools=1&fontsize=13&hidenavigation=1&module=%2Fsrc%2Fentities%2Findex.ts">
               edit the code for this game
             </a>
             ! Want to learn how?{' '}
