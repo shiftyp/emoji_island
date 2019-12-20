@@ -80,6 +80,8 @@ export const World: React.FunctionComponent<{
     create,
     togglePaused,
     paused,
+    step,
+    stepError,
   } = useWorld(width, height)
 
   const scores = world.reduce(
@@ -178,14 +180,14 @@ export const World: React.FunctionComponent<{
           <p>(open developer console for updates)</p>
           <ul>
             {history.slice(-4).reduce((output, entries, index) => {
-              const step = history.length - Math.min(history.length, 4) + index
+              const localStep = step - Math.min(history.length, 4) + index + 1
 
               return [
-                <li key={`history-${step}`}>
+                <li key={`history-${localStep}`}>
                   <span role="img" aria-label="checkmark">
-                    ✅
+                    {stepError && localStep === step - 1 ? '❌' : '✅'}
                   </span>
-                  Step {step} [{entries.length} updates]
+                  Step {localStep} [{entries.length} updates]
                 </li>,
                 ...output,
               ]

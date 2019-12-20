@@ -7,6 +7,7 @@ import {
   useCallback,
   MutableRefObject,
   useEffect,
+  useState,
 } from 'react'
 import { sources } from '../entities'
 import {
@@ -30,7 +31,7 @@ export const sourcesMap: Record<string, SourceEntity> = sources.reduce(
 
 type World = Entity[]
 type History = string[][]
-type Update = [number, string[], Entity]
+type Update = [number, string, Entity]
 
 const generateWorld = (width: number, height: number) => {
   const world: World = []
@@ -63,7 +64,7 @@ export const useScale = (fn: () => number) => useMemo(fn, [])
 
 export type Look = (name: string) => Entity | null
 export type Replace = (
-  historyEntry: string | string[],
+  historyEntry: string,
   target: Entity,
   replacement: Entity,
   filler?: Entity
@@ -90,7 +91,8 @@ export const useWorld = (width: number, height: number) => {
     height,
     width,
   ])
-  const step = useRef<number>(0)
+  const [step, setStep] = useState<number>(null)
+  const stepError = useRef<[Error, Entity]>(null)
   const [paused, togglePaused] = useReducer(
     (last, input = null) => (input != null ? input : !last),
     false
@@ -101,33 +103,36 @@ export const useWorld = (width: number, height: number) => {
       state: {
         world: World
         history: History
-        ids: Record<string, true>
+        ids: Record<string, Entity>
       },
       updates: Update[]
     ) =>
-      updates.reduce(({ world, history }, [index, historyEntry, entity]) => {
-        const newWorld = [
-          ...world.slice(0, index),
-          entity,
-          ...world.slice(index + 1),
-        ]
+      updates.reduce(
+        ({ world, history, ids }, [index, historyEntry, entity]) => {
+          const newWorld = [
+            ...world.slice(0, index),
+            entity,
+            ...world.slice(index + 1),
+          ]
 
-        return {
-          ids: newWorld.reduce(
-            (ids, entity) => ({
-              ...ids,
-              [entity.id]: true,
-            }),
-            {}
-          ),
-          world: newWorld,
-          history: [
-            ...history.slice(0, step.current),
-            [...(history[step.current] || []), historyEntry],
-            ...history.slice(step.current + 1),
-          ],
-        }
-      }, state),
+          return {
+            ids: newWorld.reduce(
+              (ids, entity) => ({
+                ...ids,
+                [entity.id]: entity,
+              }),
+              {}
+            ),
+            world: newWorld,
+            history: [
+              ...history.slice(0, step),
+              [...(history[step] || []), historyEntry],
+              ...history.slice(step + 1),
+            ],
+          }
+        },
+        state
+      ),
     {
       world: initialWorld,
       history: [],
@@ -159,18 +164,12 @@ export const useWorld = (width: number, height: number) => {
       entity => entity.id === replacement.id
     )
     const index = world.findIndex(entity => entity.id === target.id)
-    const updates: Update[] = [
-      [
-        index,
-        Array.isArray(historyEntry) ? historyEntry : [historyEntry],
-        replacement,
-      ],
-    ]
+    const updates: Update[] = [[index, historyEntry, replacement]]
 
     if (replacementIndex >= 0) {
       updates.push([
         replacementIndex,
-        [story()`${replacement} left ${filler}`],
+        story`${replacement} left ${filler}`,
         filler,
       ])
     }
@@ -204,15 +203,31 @@ export const useWorld = (width: number, height: number) => {
     if (!paused) {
       const interval = setInterval(() => {
         if (paused) return
-        if (step.current && history[step.current]) {
-          console.groupCollapsed(`✅ Step ${step.current}`)
-          history[step.current].forEach((entry, i) => console.log(...entry))
+        const entries = history[step] || []
+        if (step !== null) {
+          console.groupCollapsed(
+            `${stepError.current ? '❌' : '✅'} Step ${step} [${
+              entries.length
+            } updates]`
+          )
+          entries.forEach((entry, i) => console.log(entry))
+
+          if (stepError.current) {
+            const [error, entity] = stepError.current
+
+            console.log(story`${entity} threw `, error)
+          }
+
           console.groupEnd()
         }
 
-        console.groupEnd()
+        if (stepError.current) {
+          setStep(step)
+          return clearInterval(interval)
+        }
 
-        step.current++
+        step == null ? setStep(0) : setStep(step + 1)
+
         const { updates } = shuffle(Object.keys(behaviors)).reduce(
           ({ updates, updatedIds }, key) => {
             if (!ids[key] || updatedIds[key]) {
@@ -221,55 +236,54 @@ export const useWorld = (width: number, height: number) => {
             const entityBehaviors = behaviors[key]
 
             entityBehaviors.forEach(([steps, positionRef, action]) => {
-              if (step.current % steps === 0) {
-                action({
-                  replace: (
-                    historyEntry,
-                    target,
-                    replacement,
-                    filler = create('Space')
-                  ) => {
-                    if (updatedIds[target.id] || updatedIds[replacement.id]) {
-                      return
-                    }
-                    const index = world.findIndex(
-                      entity => entity.id === target.id
-                    )
-                    const replacementIndex = world.findIndex(
-                      entity => entity.id === replacement.id
-                    )
+              if (step % steps === 0 && !stepError.current) {
+                try {
+                  action({
+                    replace: (
+                      historyEntry,
+                      target,
+                      replacement,
+                      filler = create('Space')
+                    ) => {
+                      if (updatedIds[target.id] || updatedIds[replacement.id]) {
+                        return
+                      }
+                      const index = world.findIndex(
+                        entity => entity.id === target.id
+                      )
+                      const replacementIndex = world.findIndex(
+                        entity => entity.id === replacement.id
+                      )
 
-                    if (updates[index] || updates[replacementIndex]) {
-                      return
-                    }
-                    if (index >= 0) {
-                      updates[index] = [
-                        index,
-                        Array.isArray(historyEntry)
-                          ? historyEntry
-                          : [historyEntry],
-                        replacement,
-                      ]
-                      updatedIds[replacement.id] = true
-                      updatedIds[target.id] = true
-                    }
-                    if (replacementIndex >= 0) {
-                      updatedIds[filler.id] = true
-                      updates[replacementIndex] = [
-                        replacementIndex,
-                        [story()`${replacement} left ${filler}`],
-                        filler,
-                      ]
-                    }
-                  },
-                  create,
-                  look: (name: string) =>
-                    lookAround(
-                      positionRef.current,
-                      peek,
-                      entity => entity.name === name
-                    ),
-                })
+                      if (updates[index] || updates[replacementIndex]) {
+                        return
+                      }
+                      if (index >= 0) {
+                        updates[index] = [index, historyEntry, replacement]
+                        updatedIds[replacement.id] = true
+                        updatedIds[target.id] = true
+                      }
+                      if (replacementIndex >= 0) {
+                        updatedIds[filler.id] = true
+                        updates[replacementIndex] = [
+                          replacementIndex,
+                          story`${replacement} left ${filler}`,
+                          filler,
+                        ]
+                      }
+                    },
+                    create,
+                    look: (name: string) =>
+                      lookAround(
+                        positionRef.current,
+                        peek,
+                        entity => entity.name === name
+                      ),
+                  })
+                } catch (e) {
+                  debugger
+                  stepError.current = [e, ids[key]]
+                }
               }
             })
 
@@ -299,6 +313,8 @@ export const useWorld = (width: number, height: number) => {
     create,
     togglePaused,
     paused,
+    step: step,
+    stepError: stepError.current,
   }
 }
 
