@@ -132,17 +132,44 @@ li {
   padding: 3rem;
 }
 
+@keyframes waves {
+  0% {
+    box-shadow: 0rem 0em 2rem rgb(255, 255, 255);
+  }
+
+  40% {
+    box-shadow: -0.5em -0.5rem 10rem rgb(255, 255, 255);
+  }
+  55% {
+    box-shadow: 0.5rem -0.5rem 10rem rgb(255, 255, 255);
+  }
+  70% {
+    box-shadow: 0.5rem 0.5rem 10rem rgb(255, 255, 255);
+  }
+
+  100% {
+    box-shadow: 0rem 0rem 2rem rgb(255, 255, 255);
+  }
+}
+
 .grid {
   position: relative;
   transform-origin: 0% 0%;
   box-sizing: content-box;
-  border-radius: 40%;
-  border: 0.5rem solid rgb(255, 227, 136);
-  box-shadow: 0 0 3rem rgb(255, 255, 255);
-  background-color: rgb(255, 227, 136);
-  padding: 3rem;
+  border-radius: 3rem;
+  border: 1rem groove rgba(40, 109, 199, 0.103);
+  background: radial-gradient(
+    ellipse,
+    rgba(146, 101, 42, 1) 30%,
+    rgba(255, 227, 136, 1) 75%
+  );
+  background-size: 150%;
+  background-position-x: 50%;
+  background-position-y: 50%;
+  padding: 2rem;
   user-select: none;
   animation: stepIntoAWorld 2s;
+  animation: waves 5s ease-in-out 0s infinite;
 }
 
 .grid:before {
@@ -156,9 +183,8 @@ li {
   left: -3rem;
   bottom: -3rem;
   right: -3rem;
-  border-radius: 50%;
+  border-radius: 3rem;
   z-index: -1;
-  animation: stepIntoAWorld 2s;
 }
 
 .grid:after {
@@ -171,9 +197,8 @@ li {
   left: -5.5rem;
   bottom: -5.5rem;
   right: -5.5rem;
-  border-radius: 50%;
+  border-radius: 3rem;
   z-index: -1;
-  animation: stepIntoAWorld 2s;
 }
 
 .grid-inner {
@@ -185,7 +210,6 @@ li {
   min-width: 100%;
   min-height: 100%;
   background-color: rgb(146, 101, 42);
-
   box-shadow: 0 0 3rem rgb(226, 157, 68);
   border-radius: 0.6rem;
   z-index: 1;
@@ -198,12 +222,11 @@ li {
   bottom: 0;
   left: 0;
   right: 0;
-  transform: scale(1.3);
-  border-radius: 40%;
+  border-radius: 3rem;
   transform-origin: 50% 50%;
   background-color: rgb(146, 101, 42);
   content: ' ';
-  filter: blur(10px);
+  filter: blur(2rem);
 }
 
 .grid .square-button {
