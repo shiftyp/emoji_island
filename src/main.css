@@ -93,6 +93,10 @@ li {
   }
 }
 
+#app {
+  position: relative;
+}
+
 .button,
 .select {
   padding: 0.5rem;
@@ -117,10 +121,18 @@ li {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   padding-left: 1rem;
-  border-bottom: 0.5rem solid rgb(19, 51, 94);
+  border-bottom: 0.5rem solid transparent;
+  z-index: 3;
+}
+
+.grid-outer {
+  padding: 3rem;
+  box-sizing: content-box;
+  transform-origin: 0% 0%;
 }
 
 .grid {
+  position: relative;
   transform-origin: 0% 0%;
   box-sizing: content-box;
   border-radius: 2rem;
@@ -221,6 +233,7 @@ li {
   padding-top: 1rem;
   box-sizing: border-box;
   overflow: auto;
+  z-index: 3;
 }
 
 .log li {
@@ -236,6 +249,9 @@ li {
 @media only screen and (max-width: 570px) {
   h1 {
     font-size: 1rem;
+  }
+  .grid-outer {
+    padding: 3rem 0 0 0;
   }
 }
 

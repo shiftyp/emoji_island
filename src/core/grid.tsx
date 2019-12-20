@@ -7,27 +7,34 @@ export type GridProps = {
   left: number
   top: number
   gridRef: React.MutableRefObject<HTMLDivElement>
+  gridOuterRef: React.MutableRefObject<HTMLDivElement>
   style?: React.CSSProperties
 }
 
 export const Grid: React.FunctionComponent<GridProps> = React.memo(
   ({ height, width, scale, children, left, top, gridRef, style }) => (
     <div
-      key="grid"
+      className="grid-outer"
       ref={gridRef}
-      className="grid"
       style={{
         position: 'absolute',
         top: `${top}px`,
         left: `${left}px`,
-        height: `${height * 3}rem`,
-        width: `${width * 3}rem`,
-        transform: scale !== null ? `scale(${scale}) translate(25%, 25%)` : '',
+        transform: scale !== null ? `scale(${scale})` : '',
         ...(style || {}),
       }}
     >
-      <div className="grid-inner" key="grid-inner">
-        {children}
+      <div
+        key="grid"
+        className="grid"
+        style={{
+          height: `${height * 3}rem`,
+          width: `${width * 3}rem`,
+        }}
+      >
+        <div className="grid-inner" key="grid-inner">
+          {children}
+        </div>
       </div>
     </div>
   )

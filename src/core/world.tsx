@@ -21,6 +21,7 @@ export const World: React.FunctionComponent<{
   const logRef = React.useRef<HTMLDivElement>(null)
   const headerRef = React.useRef<HTMLDivElement>(null)
   const gridRef = React.useRef<HTMLDivElement>(null)
+  const gridOuterRef = React.useRef<HTMLDivElement>(null)
 
   const initialMenu = React.useMemo(() => window.innerWidth < 1000, [])
   const [scale, setScale] = React.useState<number>(null)
@@ -38,8 +39,8 @@ export const World: React.FunctionComponent<{
 
         setScale(
           Math.min(
-            viewportWidth / (gridRef.current.offsetWidth * 1.5),
-            viewportHeight / (gridRef.current.offsetHeight * 1.5)
+            viewportWidth / gridRef.current.offsetWidth,
+            viewportHeight / gridRef.current.offsetHeight
           )
         )
       }
@@ -51,8 +52,8 @@ export const World: React.FunctionComponent<{
 
       setScale(
         Math.min(
-          viewportWidth / (gridRef.current.offsetWidth * 1.5),
-          viewportHeight / (gridRef.current.offsetHeight * 1.5)
+          viewportWidth / gridRef.current.offsetWidth,
+          viewportHeight / gridRef.current.offsetHeight
         )
       )
       toggleSidebar(false)
