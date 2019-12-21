@@ -135,6 +135,8 @@ li {
 @keyframes waves {
   0% {
     box-shadow: 0rem 0em 2rem rgb(255, 255, 255);
+    border-width: 0.5rem;
+    padding: 2rem;
   }
 
   40% {
@@ -142,6 +144,8 @@ li {
   }
   55% {
     box-shadow: 0.5rem -0.5rem 10rem rgb(255, 255, 255);
+    border-width: 0;
+    padding: 2.5rem;
   }
   70% {
     box-shadow: 0.5rem 0.5rem 10rem rgb(255, 255, 255);
@@ -149,6 +153,8 @@ li {
 
   100% {
     box-shadow: 0rem 0rem 2rem rgb(255, 255, 255);
+    border-width: 0.5rem;
+    padding: 2rem;
   }
 }
 
