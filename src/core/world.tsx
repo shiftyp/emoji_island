@@ -25,6 +25,7 @@ export const World: React.FunctionComponent<{
 
   const initialMenu = React.useMemo(() => window.innerWidth < 1000, [])
   const [scale, setScale] = React.useState<number>(null)
+  const [left, setLeft] = React.useState<number>(0)
   const [showMenu, setMenu] = React.useState<boolean>(initialMenu)
   const [showSidebar, toggleSidebar] = React.useReducer<
     (state: Boolean, arg?: boolean) => boolean
@@ -32,33 +33,33 @@ export const World: React.FunctionComponent<{
 
   const resizeHandler = () => {
     if (logRef.current && headerRef.current && gridRef.current) {
+      const localScale = scale || 1
+      const gridRect = gridRef.current.getBoundingClientRect()
+      const viewportWidth = window.innerWidth
+      const viewportHeight = window.innerHeight - headerRef.current.offsetHeight
       if (window.innerWidth > 1000 && window.devicePixelRatio <= 2) {
-        const viewportWidth = window.innerWidth - logRef.current.offsetWidth
-        const viewportHeight =
-          window.innerHeight - headerRef.current.offsetHeight
-
         setScale(
           Math.min(
-            viewportWidth / gridRef.current.offsetWidth,
-            viewportHeight / gridRef.current.offsetHeight
+            viewportWidth / (gridRect.width / localScale),
+            viewportHeight / (gridRect.height / localScale)
           )
         )
+        setLeft((viewportWidth - gridRect.width) / 4)
         toggleSidebar(true)
         setMenu(false)
       } else {
-        const viewportWidth = window.innerWidth
-        const viewportHeight =
-          window.innerHeight - headerRef.current.offsetHeight
-
         setScale(
           Math.min(
-            viewportWidth / gridRef.current.offsetWidth,
-            viewportHeight / gridRef.current.offsetHeight
+            viewportWidth / (gridRect.width / localScale),
+            viewportHeight / (gridRect.height / localScale)
           )
         )
+        setLeft((viewportWidth - gridRect.width) / 2)
         toggleSidebar(false)
         setMenu(true)
       }
+    } else {
+      setScale(null)
     }
   }
 
@@ -230,8 +231,8 @@ export const World: React.FunctionComponent<{
           top={headerRef.current && headerRef.current.offsetHeight}
           left={
             showSidebar && !showMenu && logRef.current
-              ? logRef.current.offsetWidth
-              : 0
+              ? logRef.current.offsetWidth + left
+              : left
           }
           height={height}
           width={width}

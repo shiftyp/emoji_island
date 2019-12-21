@@ -16,10 +16,11 @@ export const Grid: React.FunctionComponent<GridProps> = React.memo(
       className="grid-outer"
       ref={gridRef}
       style={{
-        position: 'absolute',
+        visibility: scale !== null ? 'visible' : 'hidden',
         top: `${top}px`,
         left: `${left}px`,
-        transform: scale !== null ? `scale(${scale})` : '',
+        transform:
+          scale !== null ? `scale(${scale}) translate(-1.5rem, -1.5rem)` : '',
         ...(style || {}),
       }}
     >

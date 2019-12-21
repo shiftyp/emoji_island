@@ -190,6 +190,11 @@ li {
   }
 }
 
+.grid-outer {
+  position: absolute;
+  box-sizing: content-box;
+}
+
 .grid {
   position: relative;
   transform-origin: 0% 0%;
