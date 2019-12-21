@@ -134,27 +134,59 @@ li {
 
 @keyframes waves {
   0% {
-    box-shadow: 0rem 0em 2rem rgb(255, 255, 255);
-    border-width: 0.5rem;
-    padding: 2rem;
+    filter: blur(3rem);
+    border-top: 3rem solid rgba(84, 186, 233, 0.8);
+    border-bottom: 3rem solid rgba(84, 186, 233, 0.8);
+    border-right: 1rem solid rgba(255, 255, 255, 0.65);
+    border-left: 1rem solid rgba(255, 255, 255, 0.65);
   }
 
   40% {
-    box-shadow: -0.5em -0.5rem 10rem rgb(255, 255, 255);
+    filter: blur(1.75rem);
   }
   55% {
-    box-shadow: 0.5rem -0.5rem 10rem rgb(255, 255, 255);
-    border-width: 0;
-    padding: 2.5rem;
+    filter: blur(1.75rem);
+    border-top: 1rem solid rgba(255, 255, 255, 0.65);
+    border-bottom: 1rem solid rgba(255, 255, 255, 0.65);
+    border-left: 3rem solid rgba(84, 186, 233, 0.8);
+    border-right: 3rem solid rgba(84, 186, 233, 0.8);
   }
   70% {
-    box-shadow: 0.5rem 0.5rem 10rem rgb(255, 255, 255);
+    filter: blur(1.75rem);
   }
 
   100% {
-    box-shadow: 0rem 0rem 2rem rgb(255, 255, 255);
-    border-width: 0.5rem;
-    padding: 2rem;
+    filter: blur(3rem);
+    border-top: 3rem solid rgba(84, 186, 233, 0.8);
+    border-bottom: 3rem solid rgba(84, 186, 233, 0.8);
+    border-right: 1rem solid rgba(255, 255, 255, 0.65);
+    border-left: 1rem solid rgba(255, 255, 255, 0.65);
+  }
+}
+
+@keyframes shore {
+  0% {
+    border-top: 0.75rem solid rgba(40, 109, 199, 0.3);
+    border-bottom: 0.75rem solid rgba(40, 109, 199, 0.3);
+    border-left: 1.5rem solid rgba(40, 109, 199, 0.3);
+    border-right: 1.5rem solid rgba(40, 109, 199, 0.3);
+    padding: 2rem 1.25rem;
+  }
+
+  50% {
+    border-right: 0.75rem solid rgba(40, 109, 199, 0.3);
+    border-left: 0.75rem solid rgba(40, 109, 199, 0.3);
+    border-top: 1.5rem solid rgba(40, 109, 199, 0.3);
+    border-bottom: 1.5rem solid rgba(40, 109, 199, 0.3);
+    padding: 1.25rem 2rem;
+  }
+
+  100% {
+    border-top: 0.75rem solid rgba(40, 109, 199, 0.3);
+    border-bottom: 0.75rem solid rgba(40, 109, 199, 0.3);
+    border-left: 1.5rem solid rgba(40, 109, 199, 0.3);
+    border-right: 1.5rem solid rgba(40, 109, 199, 0.3);
+    padding: 2rem 1.25rem;
   }
 }
 
@@ -163,11 +195,11 @@ li {
   transform-origin: 0% 0%;
   box-sizing: content-box;
   border-radius: 3rem;
-  border: 1rem groove rgba(40, 109, 199, 0.103);
   background: radial-gradient(
-    ellipse,
-    rgba(146, 101, 42, 1) 30%,
-    rgba(255, 227, 136, 1) 75%
+    circle,
+    rgb(233, 159, 62) 30%,
+    rgba(255, 227, 136, 1) 40%,
+    rgba(255, 227, 136, 0) 100%
   );
   background-size: 150%;
   background-position-x: 50%;
@@ -175,36 +207,33 @@ li {
   padding: 2rem;
   user-select: none;
   animation: stepIntoAWorld 2s;
-  animation: waves 5s ease-in-out 0s infinite;
+  animation: shore 5s ease-in-out 0s infinite;
 }
 
 .grid:before {
-  filter: blur(1rem);
-  border: 3rem solid rgba(84, 186, 233, 0.65);
-  background-color: rgba(99, 96, 96, 0.5);
   display: block;
   content: ' ';
   position: absolute;
-  top: -3rem;
-  left: -3rem;
-  bottom: -3rem;
-  right: -3rem;
+  top: -2rem;
+  left: -2rem;
+  bottom: -2em;
+  right: -2rem;
   border-radius: 3rem;
   z-index: -1;
+  animation: waves 5s ease-in-out 0s infinite;
 }
 
 .grid:after {
-  filter: blur(2rem);
-  border: 3rem solid rgba(45, 112, 143, 0.8);
   display: block;
   content: ' ';
   position: absolute;
-  top: -5.5rem;
-  left: -5.5rem;
-  bottom: -5.5rem;
-  right: -5.5rem;
+  top: -4rem;
+  left: -4rem;
+  bottom: -4rem;
+  right: -4rem;
   border-radius: 3rem;
   z-index: -1;
+  animation: waves 5s ease-in-out 2s infinite;
 }
 
 .grid-inner {
@@ -215,7 +244,7 @@ li {
   box-sizing: content-box;
   min-width: 100%;
   min-height: 100%;
-  background-color: rgb(146, 101, 42);
+  background-color: rgb(165, 128, 79);
   box-shadow: 0 0 3rem rgb(226, 157, 68);
   border-radius: 0.6rem;
   z-index: 1;
@@ -230,7 +259,7 @@ li {
   right: 0;
   border-radius: 3rem;
   transform-origin: 50% 50%;
-  background-color: rgb(146, 101, 42);
+  background-color: rgb(165, 128, 79);
   content: ' ';
   filter: blur(2rem);
 }
@@ -243,6 +272,7 @@ li {
   width: 3rem;
   border-radius: 20%;
   box-sizing: border-box;
+  transition: all 0.2s;
 }
 
 .grid .square {
