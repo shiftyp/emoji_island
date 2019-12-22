@@ -168,7 +168,7 @@ li {
   align-items: center;
   justify-content: center;
   box-sizing: content-box;
-  animation: shore 5s infinite;
+  /* animation: shore 5s infinite; */
 }
 
 .grid {
@@ -189,6 +189,7 @@ li {
   user-select: none;
   padding: 15%;
   animation: stepIntoAWorld 2s;
+  perspective: 1000;
 }
 
 .grid-outer:before,
