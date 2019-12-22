@@ -202,7 +202,7 @@ li {
   animation: stepIntoAWorld 2s;
 }
 
-.grid-outer:before {
+/*.grid-outer:before {
   filter: blur(3rem);
   border: 3rem solid transparent;
   display: block;
@@ -232,7 +232,7 @@ li {
   z-index: -1;
   animation: waves 20s ease-in-out 5s infinite;
   transform-origin: 50% 50%;
-}
+}*/
 
 .grid-inner {
   position: relative;
@@ -342,7 +342,7 @@ li {
     padding: 1.5rem;
   }
   body {
-    font-size: 14px;
+    font-size: 20px;
   }
   h1 {
     font-size: 2rem;
