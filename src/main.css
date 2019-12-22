@@ -134,65 +134,52 @@ li {
 
 @keyframes waves {
   0% {
-    filter: blur(3rem);
-    border-top: 3rem solid rgba(84, 186, 233, 0.8);
-    border-bottom: 3rem solid rgba(84, 186, 233, 0.8);
-    border-right: 1rem solid rgba(255, 255, 255, 0.65);
-    border-left: 1rem solid rgba(255, 255, 255, 0.65);
+    transform: scale(5);
+    border-top-color: rgba(84, 186, 233, 0.8);
+    border-bottom-color: rgba(84, 186, 233, 0.8);
+    border-right-color: rgba(255, 255, 255, 0.65);
+    border-left-color: rgba(255, 255, 255, 0.65);
   }
 
   40% {
-    filter: blur(1.75rem);
   }
   55% {
-    filter: blur(1.75rem);
-    border-top: 1rem solid rgba(255, 255, 255, 0.65);
-    border-bottom: 1rem solid rgba(255, 255, 255, 0.65);
-    border-left: 3rem solid rgba(84, 186, 233, 0.8);
-    border-right: 3rem solid rgba(84, 186, 233, 0.8);
+    border-top-color: rgba(255, 255, 255, 0.65);
+    border-bottom-color: rgba(255, 255, 255, 0.65);
+    border-left-color: rgba(84, 186, 233, 0.8);
+    border-right-color: rgba(84, 186, 233, 0.8);
   }
   70% {
-    filter: blur(1.75rem);
   }
 
   100% {
-    filter: blur(3rem);
-    border-top: 3rem solid rgba(84, 186, 233, 0.8);
-    border-bottom: 3rem solid rgba(84, 186, 233, 0.8);
-    border-right: 1rem solid rgba(255, 255, 255, 0.65);
-    border-left: 1rem solid rgba(255, 255, 255, 0.65);
+    border-top-color: rgba(84, 186, 233, 0.8);
+    border-bottom-color: rgba(84, 186, 233, 0.8);
+    border-right-color: rgba(255, 255, 255, 0.65);
+    border-left-color: rgba(255, 255, 255, 0.65);
+    transform: scale(0);
   }
 }
 
 @keyframes shore {
   0% {
-    border-top: 0.75rem solid rgba(40, 109, 199, 0.3);
-    border-bottom: 0.75rem solid rgba(40, 109, 199, 0.3);
-    border-left: 1.5rem solid rgba(40, 109, 199, 0.3);
-    border-right: 1.5rem solid rgba(40, 109, 199, 0.3);
-    padding: 2rem 1.25rem;
+    filter: drop-shadow(0 0 3rem rgba(159, 222, 252, 0.8));
   }
-
   50% {
-    border-right: 0.75rem solid rgba(40, 109, 199, 0.3);
-    border-left: 0.75rem solid rgba(40, 109, 199, 0.3);
-    border-top: 1.5rem solid rgba(40, 109, 199, 0.3);
-    border-bottom: 1.5rem solid rgba(40, 109, 199, 0.3);
-    padding: 1.25rem 2rem;
+    filter: drop-shadow(0 0 0.2rem rgba(255, 255, 255, 0.5));
   }
-
   100% {
-    border-top: 0.75rem solid rgba(40, 109, 199, 0.3);
-    border-bottom: 0.75rem solid rgba(40, 109, 199, 0.3);
-    border-left: 1.5rem solid rgba(40, 109, 199, 0.3);
-    border-right: 1.5rem solid rgba(40, 109, 199, 0.3);
-    padding: 2rem 1.25rem;
+    filter: drop-shadow(0 0 3rem rgba(159, 222, 252, 0.8));
   }
 }
 
 .grid-outer {
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: content-box;
+  animation: shore 5s infinite;
 }
 
 .grid {
@@ -200,22 +187,24 @@ li {
   transform-origin: 0% 0%;
   box-sizing: content-box;
   border-radius: 3rem;
+  clip-path: url('#wave1');
   background: radial-gradient(
     circle,
     rgb(233, 159, 62) 30%,
     rgba(255, 227, 136, 1) 40%,
-    rgba(255, 227, 136, 0) 100%
+    rgba(84, 186, 233, 0.8) 100%
   );
   background-size: 150%;
   background-position-x: 50%;
   background-position-y: 50%;
-  padding: 2rem;
   user-select: none;
+  padding: 20%;
   animation: stepIntoAWorld 2s;
-  animation: shore 5s ease-in-out 0s infinite;
 }
 
-.grid:before {
+.grid-outer:before {
+  filter: blur(3rem);
+  border: 3rem solid transparent;
   display: block;
   content: ' ';
   position: absolute;
@@ -223,22 +212,26 @@ li {
   left: -2rem;
   bottom: -2em;
   right: -2rem;
-  border-radius: 3rem;
+  border-radius: 40%;
   z-index: -1;
-  animation: waves 5s ease-in-out 0s infinite;
+  animation: waves 20s ease-in-out 0s infinite;
+  transform-origin: 50% 50%;
 }
 
-.grid:after {
+.grid-outer:after {
+  filter: blur(3rem);
+  border: 3rem solid transparent;
   display: block;
   content: ' ';
   position: absolute;
-  top: -4rem;
-  left: -4rem;
-  bottom: -4rem;
-  right: -4rem;
-  border-radius: 3rem;
+  top: -10rem;
+  left: -10rem;
+  bottom: -10rem;
+  right: -10rem;
+  border-radius: 40%;
   z-index: -1;
-  animation: waves 5s ease-in-out 2s infinite;
+  animation: waves 20s ease-in-out 5s infinite;
+  transform-origin: 50% 50%;
 }
 
 .grid-inner {
@@ -251,7 +244,7 @@ li {
   min-height: 100%;
   background-color: rgb(165, 128, 79);
   box-shadow: 0 0 3rem rgb(226, 157, 68);
-  border-radius: 0.6rem;
+  border-radius: 3rem;
   z-index: 1;
 }
 

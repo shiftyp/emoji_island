@@ -26,7 +26,16 @@ export const sourcesMap: Record<string, SourceEntity> = sources.reduce(
     ...map,
     [source.name]: source,
   }),
-  {}
+  {
+    None: {
+      name: 'None',
+      startingEnergy: 0,
+      makeId: () => null,
+      component: () => null,
+      probability: 0,
+      animate: false,
+    },
+  } as Record<string, SourceEntity>
 )
 
 type World = Entity[]
@@ -53,6 +62,10 @@ const generateWorld = (width: number, height: number) => {
       world.push(createEntityFromSource(source))
     }
   }
+
+  ;[0, width - 1, world.length - 1, world.length - width].forEach(index => {
+    world[index] = createEntityFromSource(sourcesMap.None)
+  })
 
   return world
 }

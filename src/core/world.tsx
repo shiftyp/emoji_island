@@ -4,12 +4,13 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { useWorld, WorldContext, Coordinate, sourcesMap } from './logic'
 import { Grid } from './grid'
 import { SquareBoundary } from './errors'
+import { Waves } from './waves'
 
 export const sizes = {
   Small: [5, 5],
   Medium: [10, 10],
-  Large: [15, 20],
-  Huge: [20, 30],
+  Large: [20, 20],
+  Huge: [30, 30],
 }
 
 export const World: React.FunctionComponent<{
@@ -34,27 +35,35 @@ export const World: React.FunctionComponent<{
   const resizeHandler = () => {
     if (logRef.current && headerRef.current && gridRef.current) {
       const localScale = scale || 1
-      const gridRect = gridRef.current.getBoundingClientRect()
+      const {
+        width: gridHeight = null,
+        height: gridWidth = null,
+      } = gridRef.current.getBoundingClientRect()
+
+      if (!gridHeight || !gridWidth) {
+        return
+      }
+
       const viewportWidth = window.innerWidth
       const viewportHeight = window.innerHeight - headerRef.current.offsetHeight
       if (window.innerWidth > 1000 && window.devicePixelRatio <= 2) {
         setScale(
           Math.min(
-            viewportWidth / (gridRect.width / localScale),
-            viewportHeight / (gridRect.height / localScale)
+            viewportWidth / (gridWidth / localScale),
+            viewportHeight / (gridHeight / localScale)
           )
         )
-        setLeft((viewportWidth - gridRect.width) / 4)
+        setLeft((viewportWidth - gridWidth) / 4)
         toggleSidebar(true)
         setMenu(false)
       } else {
         setScale(
           Math.min(
-            viewportWidth / (gridRect.width / localScale),
-            viewportHeight / (gridRect.height / localScale)
+            viewportWidth / (gridHeight / localScale),
+            viewportHeight / (gridHeight / localScale)
           )
         )
-        setLeft((viewportWidth - gridRect.width) / 2)
+        setLeft((viewportWidth - gridWidth) / 2)
         toggleSidebar(false)
         setMenu(true)
       }
@@ -97,6 +106,8 @@ export const World: React.FunctionComponent<{
     }),
     {} as Record<string, { count: number; energy: number }>
   )
+
+  const gridBB = gridRef.current && gridRef.current.getBoundingClientRect()
 
   return (
     <>
@@ -280,6 +291,13 @@ export const World: React.FunctionComponent<{
           </TransitionGroup>
         </Grid>
       </WorldContext.Provider>
+      {gridBB && (
+        <Waves
+          height={gridBB.height || 1}
+          width={gridBB.width || 1}
+          scale={scale || 1}
+        />
+      )}
     </>
   )
 }
