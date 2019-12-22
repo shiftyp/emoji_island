@@ -19,12 +19,13 @@ export const World: React.FunctionComponent<{
   onRestart: () => void
   name: string
 }> = ({ size, sizeControl, name, onRestart }) => {
+  const testWindow = () =>
+    window.innerWidth < 1000 && window.devicePixelRatio <= 2
   const logRef = React.useRef<HTMLDivElement>(null)
   const headerRef = React.useRef<HTMLDivElement>(null)
   const gridRef = React.useRef<HTMLDivElement>(null)
-  const gridOuterRef = React.useRef<HTMLDivElement>(null)
 
-  const initialMenu = React.useMemo(() => window.innerWidth < 1000, [])
+  const initialMenu = React.useMemo(testWindow, [])
   const [scale, setScale] = React.useState<number>(null)
   const [left, setLeft] = React.useState<number>(0)
   const [showMenu, setMenu] = React.useState<boolean>(initialMenu)
@@ -46,7 +47,7 @@ export const World: React.FunctionComponent<{
 
       const viewportWidth = window.innerWidth
       const viewportHeight = window.innerHeight - headerRef.current.offsetHeight
-      if (window.innerWidth > 1000 && window.devicePixelRatio <= 2) {
+      if (testWindow()) {
         setScale(
           Math.min(
             viewportWidth / (gridWidth / localScale),
