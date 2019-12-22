@@ -20,18 +20,18 @@ export const World: React.FunctionComponent<{
   name: string
 }> = ({ size, sizeControl, name, onRestart }) => {
   const testWindow = () =>
-    window.innerWidth < 1000 && window.devicePixelRatio <= 2
+    window.innerWidth > 1000 && window.devicePixelRatio <= 2
   const logRef = React.useRef<HTMLDivElement>(null)
   const headerRef = React.useRef<HTMLDivElement>(null)
   const gridRef = React.useRef<HTMLDivElement>(null)
 
-  const initialMenu = React.useMemo(testWindow, [])
+  const initialOnDesktop = React.useMemo(testWindow, [])
   const [scale, setScale] = React.useState<number>(null)
   const [left, setLeft] = React.useState<number>(0)
-  const [showMenu, setMenu] = React.useState<boolean>(initialMenu)
+  const [showMenu, setMenu] = React.useState<boolean>(!initialOnDesktop)
   const [showSidebar, toggleSidebar] = React.useReducer<
     (state: Boolean, arg?: boolean) => boolean
-  >((last, input = null) => (input != null ? input : !last), true)
+  >((last, input = !last) => input, false)
 
   const resizeHandler = () => {
     if (logRef.current && headerRef.current && gridRef.current) {
@@ -185,6 +185,8 @@ export const World: React.FunctionComponent<{
                   ((scores[a] && scores[a].count) || 0)
               )
               .map((name, i) => {
+                if (name === 'None') return null
+
                 const avgEnergy = scores[name]
                   ? Math.floor(
                       (scores[name].energy / scores[name].count) * 100

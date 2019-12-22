@@ -198,7 +198,7 @@ li {
   background-position-x: 50%;
   background-position-y: 50%;
   user-select: none;
-  padding: 20%;
+  padding: 15%;
   animation: stepIntoAWorld 2s;
 }
 
@@ -270,7 +270,6 @@ li {
   width: 3rem;
   border-radius: 20%;
   box-sizing: border-box;
-  transition: all 0.2s;
 }
 
 .grid .square {
