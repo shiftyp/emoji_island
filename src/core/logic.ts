@@ -239,7 +239,7 @@ export const useWorld = (width: number, height: number) => {
       const interval = setInterval(() => {
         if (paused) return
 
-        step == null ? setStep(0) : setStep(step + 1)
+        step == null ? setStep(1) : setStep(step + 1)
 
         const { updates } = shuffle(Object.keys(behaviors)).reduce(
           ({ updates, updatedIds }, key) => {
