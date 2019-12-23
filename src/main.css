@@ -168,7 +168,6 @@ li {
   align-items: center;
   justify-content: center;
   box-sizing: content-box;
-  /* animation: shore 5s infinite; */
 }
 
 .grid {
@@ -192,8 +191,8 @@ li {
   perspective: 1000;
 }
 
-.grid-outer:before,
-.grid-outer:after {
+body:before,
+body:after {
   background: radial-gradient(
     #1e579946 0%,
     #8fb5d369 7%,
@@ -218,10 +217,10 @@ li {
   display: block;
   content: ' ';
   position: absolute;
-  top: -50rem;
-  left: -50rem;
-  bottom: -50em;
-  right: -50rem;
+  top: 0rem;
+  left: 0rem;
+  bottom: 0em;
+  right: 0rem;
   z-index: -1;
   background-position: center center;
   background-repeat: no-repeat;

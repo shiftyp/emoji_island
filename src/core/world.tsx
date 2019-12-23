@@ -34,12 +34,12 @@ export const World: React.FunctionComponent<{
   >((last, input = !last) => input, false)
 
   const resizeHandler = () => {
+    console.log('resize')
     if (logRef.current && headerRef.current && gridRef.current) {
       const localScale = scale || 1
-      const {
-        width: gridHeight = null,
-        height: gridWidth = null,
-      } = gridRef.current.getBoundingClientRect()
+      console.log(gridRef.current.offsetWidth)
+      const gridHeight = gridRef.current.offsetWidth
+      const gridWidth = gridRef.current.offsetHeight
 
       if (!gridHeight || !gridWidth) {
         return
@@ -49,20 +49,14 @@ export const World: React.FunctionComponent<{
       const viewportHeight = window.innerHeight - headerRef.current.offsetHeight
       if (testWindow()) {
         setScale(
-          Math.min(
-            viewportWidth / (gridWidth / localScale),
-            viewportHeight / (gridHeight / localScale)
-          )
+          Math.min(viewportWidth / gridWidth, viewportHeight / gridHeight)
         )
         setLeft((viewportWidth - gridWidth) / 4)
         toggleSidebar(true)
         setMenu(false)
       } else {
         setScale(
-          Math.min(
-            viewportWidth / (gridHeight / localScale),
-            viewportHeight / (gridHeight / localScale)
-          )
+          Math.min(viewportWidth / gridHeight, viewportHeight / gridHeight)
         )
         setLeft((viewportWidth - gridWidth) / 2)
         toggleSidebar(false)
