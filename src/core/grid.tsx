@@ -1,4 +1,5 @@
 import React from 'react'
+import { Island } from './island'
 
 export type GridProps = {
   height: number
@@ -11,31 +12,35 @@ export type GridProps = {
 }
 
 export const Grid: React.FunctionComponent<GridProps> = React.memo(
-  ({ height, width, scale, children, left, top, gridRef, style }) => (
-    <div
-      className="grid-outer"
-      ref={gridRef}
-      style={{
-        visibility: scale !== null ? 'visible' : 'hidden',
-        top: `${top}px`,
-        left: `${left}px`,
-        transform:
-          scale !== null ? `scale(${scale}) translate(-1.5rem, -1.5rem)` : '',
-        ...(style || {}),
-      }}
-    >
+  ({ height, width, scale, children, left, top, gridRef, style }) => {
+    const gridInnerRef = React.useRef<HTMLDivElement>(null)
+
+    return (
       <div
-        key="grid"
-        className="grid"
+        className="grid-outer"
+        ref={gridRef}
         style={{
-          height: `${height * 3}rem`,
-          width: `${width * 3}rem`,
+          visibility: scale !== null ? 'visible' : 'hidden',
+          top: `${top}px`,
+          left: `${left}px`,
+          transform: scale !== null ? `scale(${scale})` : '',
+          ...(style || {}),
         }}
       >
-        <div className="grid-inner" key="grid-inner">
-          {children}
+        <div
+          key="grid"
+          className="grid"
+          style={{
+            height: `${height * 3}rem`,
+            width: `${width * 3}rem`,
+          }}
+        >
+          <div className="grid-inner" key="grid-inner" ref={gridInnerRef}>
+            <Island />
+            {children}
+          </div>
         </div>
       </div>
-    </div>
-  )
+    )
+  }
 )

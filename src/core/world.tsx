@@ -4,7 +4,6 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { useWorld, WorldContext, Coordinate, sourcesMap } from './logic'
 import { Grid } from './grid'
 import { SquareBoundary } from './errors'
-import { Waves } from './waves'
 
 export const sizes = {
   Small: [5, 5],
@@ -25,19 +24,13 @@ export const World: React.FunctionComponent<{
   const headerRef = React.useRef<HTMLDivElement>(null)
   const gridRef = React.useRef<HTMLDivElement>(null)
 
-  const initialOnDesktop = React.useMemo(testWindow, [])
   const [scale, setScale] = React.useState<number>(null)
-  const [left, setLeft] = React.useState<number>(0)
-  const [showMenu, setMenu] = React.useState<boolean>(!initialOnDesktop)
   const [showSidebar, toggleSidebar] = React.useReducer<
     (state: Boolean, arg?: boolean) => boolean
   >((last, input = !last) => input, false)
 
   const resizeHandler = () => {
-    console.log('resize')
     if (logRef.current && headerRef.current && gridRef.current) {
-      const localScale = scale || 1
-      console.log(gridRef.current.offsetWidth)
       const gridHeight = gridRef.current.offsetWidth
       const gridWidth = gridRef.current.offsetHeight
 
@@ -45,23 +38,11 @@ export const World: React.FunctionComponent<{
         return
       }
 
-      const viewportWidth = window.innerWidth
+      const viewportWidth = window.innerWidth - logRef.current.offsetWidth
       const viewportHeight = window.innerHeight - headerRef.current.offsetHeight
-      if (testWindow()) {
-        setScale(
-          Math.min(viewportWidth / gridWidth, viewportHeight / gridHeight)
-        )
-        setLeft((viewportWidth - gridWidth) / 4)
-        toggleSidebar(true)
-        setMenu(false)
-      } else {
-        setScale(
-          Math.min(viewportWidth / gridHeight, viewportHeight / gridHeight)
-        )
-        setLeft((viewportWidth - gridWidth) / 2)
-        toggleSidebar(false)
-        setMenu(true)
-      }
+      setScale(
+        Math.min(viewportWidth / gridHeight, viewportHeight / gridHeight)
+      )
     } else {
       setScale(null)
     }
@@ -102,24 +83,22 @@ export const World: React.FunctionComponent<{
     {} as Record<string, { count: number; energy: number }>
   )
 
-  const gridBB = gridRef.current && gridRef.current.getBoundingClientRect()
-
   return (
     <>
       <div className="layout" key="layout">
         <div className="header" ref={headerRef}>
           <h1>
-            {sizeControl} Emoji Island:{' '}
-            <button className="button" onClick={() => onRestart()}>
-              Restart
-            </button>
-            <button
-              className="button"
-              onClick={() => (togglePaused as () => void)()}
-            >
-              {!paused ? 'Pause' : 'Play'}
-            </button>
-            {showMenu && (
+            {sizeControl} Emoji Island:
+            <div>
+              <button className="button" onClick={() => onRestart()}>
+                Restart
+              </button>
+              <button
+                className="button"
+                onClick={() => (togglePaused as () => void)()}
+              >
+                {!paused ? 'Pause' : 'Play'}
+              </button>
               <button
                 className="button"
                 onClick={() => {
@@ -127,9 +106,9 @@ export const World: React.FunctionComponent<{
                   toggleSidebar()
                 }}
               >
-                {showSidebar ? 'World' : 'Help'}
+                {showSidebar ? 'World' : 'About'}
               </button>
-            )}
+            </div>
           </h1>
         </div>
 
@@ -137,7 +116,7 @@ export const World: React.FunctionComponent<{
           className="log"
           ref={logRef}
           style={{
-            display: showMenu && !showSidebar ? 'none' : undefined,
+            display: !showSidebar ? 'none' : undefined,
             top: headerRef.current ? `${headerRef.current.offsetHeight}px` : 0,
           }}
         >
@@ -233,15 +212,11 @@ export const World: React.FunctionComponent<{
           key={name}
           gridRef={gridRef}
           style={{
-            display: showSidebar && showMenu ? 'none' : undefined,
+            display: showSidebar ? 'none' : undefined,
             visibility: scale !== null ? 'visible' : 'hidden',
           }}
           top={headerRef.current && headerRef.current.offsetHeight}
-          left={
-            showSidebar && !showMenu && logRef.current
-              ? logRef.current.offsetWidth + left
-              : left
-          }
+          left={0}
           height={height}
           width={width}
           scale={scale}
@@ -288,13 +263,6 @@ export const World: React.FunctionComponent<{
           </TransitionGroup>
         </Grid>
       </WorldContext.Provider>
-      {gridBB && (
-        <Waves
-          height={gridBB.height || 1}
-          width={gridBB.width || 1}
-          scale={scale || 1}
-        />
-      )}
     </>
   )
 }
