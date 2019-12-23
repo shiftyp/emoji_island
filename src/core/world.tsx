@@ -102,11 +102,10 @@ export const World: React.FunctionComponent<{
               <button
                 className="button"
                 onClick={() => {
-                  togglePaused(true)
                   toggleSidebar()
                 }}
               >
-                {showSidebar ? 'World' : 'About'}
+                {showSidebar ? 'Hide About' : 'About'}
               </button>
             </div>
           </h1>
@@ -212,7 +211,7 @@ export const World: React.FunctionComponent<{
           key={name}
           gridRef={gridRef}
           style={{
-            display: showSidebar ? 'none' : undefined,
+            filter: showSidebar ? 'blur(0.5em)' : undefined,
             visibility: scale !== null ? 'visible' : 'hidden',
           }}
           top={headerRef.current && headerRef.current.offsetHeight}

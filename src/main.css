@@ -228,8 +228,9 @@ li {
 
 .log {
   position: absolute;
-  width: 400px;
-  max-width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  min-height: 100vh;
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 1rem;
