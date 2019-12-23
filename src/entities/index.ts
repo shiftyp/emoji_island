@@ -27,6 +27,17 @@ export const sources: SourceEntity[] = [
     animate: false,
   },
   {
+    name: 'Volcano',
+    probability: 0,
+    component: Inanimate.Volcano,
+    makeId: () =>
+      `${fake.company.bsAdjective()} ${fake.company.bsNoun()} ${fake.random.alphaNumeric(
+        3
+      )}`,
+    startingEnergy: 0,
+    animate: false,
+  },
+  {
     name: 'Tree',
     probability: 0.02,
     component: Plants.Tree,
