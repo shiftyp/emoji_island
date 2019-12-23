@@ -40,6 +40,7 @@ export const sourcesMap: Record<string, SourceEntity> = sources.reduce(
 
 type World = Entity[]
 type History = string[][]
+type Score = Record<string, number>
 type Update = [number, string, Entity]
 
 const generateWorld = (width: number, height: number) => {
@@ -113,22 +114,25 @@ export const useWorld = (width: number, height: number) => {
     false
   )
 
-  const [{ world, history, ids }, updateWorld] = useReducer(
+  const [{ world, history, ids, score }, updateWorld] = useReducer(
     (
       state: {
         world: World
         history: History
+        score: Score
         ids: Record<string, Entity>
       },
       updates: Update[]
     ) =>
       updates.reduce(
-        ({ world, history, ids }, [index, historyEntry, entity]) => {
+        ({ world, history, score }, [index, historyEntry, entity]) => {
           const newWorld = [
             ...world.slice(0, index),
             entity,
             ...world.slice(index + 1),
           ]
+
+          const scoreEntry = historyEntry.replace(/\[(.+?)\]/g, '')
 
           return {
             ids: newWorld.reduce(
@@ -139,6 +143,10 @@ export const useWorld = (width: number, height: number) => {
               {}
             ),
             world: newWorld,
+            score: {
+              ...score,
+              [scoreEntry]: (score[scoreEntry] || 0) + 1,
+            },
             history: [
               ...history.slice(0, step),
               [...(history[step] || []), historyEntry],
@@ -151,6 +159,7 @@ export const useWorld = (width: number, height: number) => {
     {
       world: initialWorld,
       history: [],
+      score: {},
       ids: initialWorld.reduce(
         (ids, entity) => ({
           ...ids,
@@ -324,6 +333,7 @@ export const useWorld = (width: number, height: number) => {
     createBehave,
     replace,
     history,
+    score,
     create,
     togglePaused,
     paused,

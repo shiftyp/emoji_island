@@ -240,7 +240,8 @@ li {
   z-index: 3;
 }
 
-.log li {
+.log ul li,
+.log dl li {
   list-style: none;
 }
 

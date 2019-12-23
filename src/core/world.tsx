@@ -18,8 +18,6 @@ export const World: React.FunctionComponent<{
   onRestart: () => void
   name: string
 }> = ({ size, sizeControl, name, onRestart }) => {
-  const testWindow = () =>
-    window.innerWidth > 1000 && window.devicePixelRatio <= 2
   const logRef = React.useRef<HTMLDivElement>(null)
   const headerRef = React.useRef<HTMLDivElement>(null)
   const gridRef = React.useRef<HTMLDivElement>(null)
@@ -63,6 +61,7 @@ export const World: React.FunctionComponent<{
     world,
     createBehave,
     history,
+    score,
     replace,
     create,
     togglePaused,
@@ -72,7 +71,7 @@ export const World: React.FunctionComponent<{
     setStepError,
   } = useWorld(width, height)
 
-  const scores = world.reduce(
+  const populations = world.reduce(
     (scores, { name, energy }) => ({
       ...scores,
       [name]: {
@@ -148,23 +147,38 @@ export const World: React.FunctionComponent<{
             </a>
             !
           </p>
+          <h3>Score</h3>
+          <p>The number of times each event has happened in the game</p>
+          <ol>
+            {Object.keys(score)
+              .sort((a, b) => score[a] - score[b])
+              .reduce((output, key) => {
+                return [
+                  <li key={`score-${key}`}>
+                    <b>{key}</b>: {score[key]}
+                  </li>,
+                  ...output,
+                ]
+              }, [])}
+          </ol>
           <h3>Populations</h3>
+          <p>The number of entities currently in the game</p>
           <dl className="scores">
             {Object.keys(sourcesMap)
               .sort(
                 (a, b) =>
-                  ((scores[b] && scores[b].count) || 0) -
-                  ((scores[a] && scores[a].count) || 0)
+                  ((populations[b] && populations[b].count) || 0) -
+                  ((populations[a] && populations[a].count) || 0)
               )
               .map((name, i) => {
                 if (name === 'None') return null
 
-                const avgEnergy = scores[name]
+                const avgEnergy = populations[name]
                   ? Math.floor(
-                      (scores[name].energy / scores[name].count) * 100
+                      (populations[name].energy / populations[name].count) * 100
                     ) / 100
                   : 0
-                const count = scores[name] ? scores[name].count : 0
+                const count = populations[name] ? populations[name].count : 0
                 return (
                   <li key={name}>
                     {count !== 0 ? (
@@ -182,9 +196,12 @@ export const World: React.FunctionComponent<{
           </dl>
           <h3>Log:</h3>
           <p>
-            {stepError
-              ? `An error occured, restart or open developer console for more details`
-              : `(open developer console for updates)`}
+            The record of changes to the game. ❌ indicates an error in the game{' '}
+            <b>
+              {stepError
+                ? `An error occured, restart or open developer console for more details`
+                : `(open developer console for updates)`}
+            </b>
           </p>
           <ul>
             {history.slice(-4).reduce((output, entries, index) => {
