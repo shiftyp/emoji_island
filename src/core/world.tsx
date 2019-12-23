@@ -88,7 +88,7 @@ export const World: React.FunctionComponent<{
       <div className="layout" key="layout">
         <div className="header" ref={headerRef}>
           <h1>
-            {sizeControl} Emoji Island:
+            <div>{sizeControl} Emoji Island:</div>
             <div>
               <button className="button" onClick={() => onRestart()}>
                 Restart
