@@ -229,6 +229,9 @@ li {
 
 .log {
   position: absolute;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   background: rgba(0, 0, 0, 0.5);
   width: 100vw;
   min-height: 100vh;
@@ -238,6 +241,11 @@ li {
   box-sizing: border-box;
   overflow: auto;
   z-index: 3;
+}
+
+.log > * {
+  width: 100%;
+  max-width: 600px;
 }
 
 .log ul li,
