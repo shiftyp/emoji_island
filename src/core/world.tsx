@@ -38,7 +38,7 @@ export const World: React.FunctionComponent<{
         return
       }
 
-      const viewportWidth = window.innerWidth - logRef.current.offsetWidth
+      const viewportWidth = window.innerWidth
       const viewportHeight = window.innerHeight - headerRef.current.offsetHeight
       setScale(
         Math.min(viewportWidth / gridHeight, viewportHeight / gridHeight)
